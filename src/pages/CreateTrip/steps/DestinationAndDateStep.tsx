@@ -3,27 +3,31 @@ import { useState } from "react"
 import { DateRange, DayPicker } from "react-day-picker"
 import "react-day-picker/dist/style.css"
 import Button from "../../../components/Button"
-import { DestinationAndDateStepProps } from "../../../types"
+import { DestinationAndDateStepProps } from "../../../validation/types"
 import { formatTripDate } from "../../../utils/functions"
+import { useFormContext } from "react-hook-form"
+import { TripForm } from "../../../validation/schemas"
 
 const DestinationAndDateStep = ({
   isGuestInputOpen,
   setIsGuestInputOpen,
-  tripData,
-  setTripData,
 }: DestinationAndDateStepProps) => {
   const [isDatePickerOpen, setIsDatePickerOpen] = useState(false)
 
-  const { date } = tripData
+  const { register, watch, setValue } = useFormContext<TripForm>()
 
-  const formattedDate = formatTripDate(date?.from, date?.to) || "Quando"
+  const [from, to] = watch(["starts_at", "ends_at", "destination"])
 
-  function onDestinationChange(e: React.ChangeEvent<HTMLInputElement>) {
-    setTripData((prev) => ({ ...prev, destination: e.target.value }))
+  const date = {
+    from: from ? new Date(from) : undefined,
+    to: to ? new Date(to) : undefined,
   }
 
-  function onSelectDate(date: DateRange | undefined) {
-    setTripData((prev) => ({ ...prev, date }))
+  const formattedDate = formatTripDate(from, to) || "Quando"
+
+  function onSelectDate(dateRange: DateRange | undefined) {
+    if (dateRange?.from) setValue("starts_at", dateRange?.from?.toString())
+    if (dateRange?.to) setValue("ends_at", dateRange?.to.toString())
   }
 
   return (
@@ -32,11 +36,9 @@ const DestinationAndDateStep = ({
         <MapPin className="text-zinc-400 size-5" />
         <input
           disabled={isGuestInputOpen}
-          type="text"
-          placeholder="Para onde você via?"
+          placeholder="Para onde você vai?"
           className="bg-transparent text-lg placeholder-zinc-400 outline-none flex-1"
-          onChange={onDestinationChange}
-          required
+          {...register('destination')}
         />
       </div>
 
@@ -45,7 +47,7 @@ const DestinationAndDateStep = ({
         onClick={() => setIsDatePickerOpen(true)}
         className="flex items-center gap-2 text-left text-zinc-400">
         <Calendar className=" size-5" />
-        <span className="text-lg w-40 ">{formattedDate}</span>
+        <span className="text-lg w-40">{formattedDate}</span>
       </button>
 
       {isDatePickerOpen && (
@@ -63,6 +65,13 @@ const DestinationAndDateStep = ({
             </div>
 
             <DayPicker mode="range" selected={date} onSelect={onSelectDate} />
+
+            <Button
+              variant="secondary"
+              size="full"
+              onClick={() => setIsDatePickerOpen(false)}>
+              Confirmar <ArrowRight className="size-5" />
+            </Button>
           </div>
         </div>
       )}

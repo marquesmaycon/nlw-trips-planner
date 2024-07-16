@@ -1,34 +1,28 @@
 import { AtSign, Plus, X } from "lucide-react"
 import Button from "../../components/Button"
-import { InviteGuestsModalProps } from "../../types"
+import { InviteGuestsModalProps } from "../../validation/types"
+import { useFormContext } from "react-hook-form"
+import { TripForm } from "../../validation/schemas"
 
-const InviteGuestsModal = ({
-  tripData,
-  setTripData,
-  setIsGuestModalOpen,
-}: InviteGuestsModalProps) => {
+const InviteGuestsModal = ({ setIsGuestModalOpen }: InviteGuestsModalProps) => {
+  const { watch, setValue } = useFormContext<TripForm>()
+
+  const emails = watch("emails_to_invite")
+
   function addGuestEmail(event: React.FormEvent<HTMLFormElement>) {
     event.preventDefault()
 
     const email = new FormData(event.currentTarget).get("email")?.toString()
     if (!email) return
-    if (tripData.guestsEmails.includes(email)) return
+    if (emails.includes(email)) return
 
-    setTripData((prev) => ({
-      ...prev,
-      guestsEmails: [...prev.guestsEmails, email],
-    }))
-
+    setValue("emails_to_invite", [...emails, email])
     event.currentTarget.reset()
   }
 
   function removeEmailToInvite(email: string) {
-    setTripData((prev) => ({
-      ...prev,
-      guestsEmails: prev.guestsEmails.filter(
-        (prevEmail) => prevEmail !== email
-      ),
-    }))
+    const newEmails = emails.filter((prevEmail) => prevEmail !== email)
+    setValue("emails_to_invite", newEmails)
   }
 
   return (
@@ -48,7 +42,7 @@ const InviteGuestsModal = ({
         </div>
 
         <div className="flex flex-wrap gap-2">
-          {tripData.guestsEmails.map((email) => (
+          {emails.map((email) => (
             <div
               key={email}
               className="py-1.5 px-2.5 rounded-md bg-zinc-800 flex items-center gap-2">
@@ -70,7 +64,7 @@ const InviteGuestsModal = ({
           <input
             type="email"
             name="email"
-            className="bg-transparent flex-1"
+            className="bg-transparent flex-1 outline-none"
             placeholder="Digite o e-mail do convidado"
           />
 

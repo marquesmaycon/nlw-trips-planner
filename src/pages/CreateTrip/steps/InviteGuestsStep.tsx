@@ -1,12 +1,16 @@
 import { ArrowRight, UserRoundPlus } from "lucide-react"
 import Button from "../../../components/Button"
-import { InviteGuestsStepProps } from "../../../types"
+import { InviteGuestsStepProps } from "../../../validation/types"
+import { useFormContext } from "react-hook-form"
+import { TripForm } from "../../../validation/schemas"
 
 const InviteGuestsStep = ({
-  guestEmails: emails,
   setIsConfirmModalOpen,
   setIsGuestModalOpen,
 }: InviteGuestsStepProps) => {
+  const { watch } = useFormContext<TripForm>()
+  const emails = watch("emails_to_invite")
+
   return (
     <div className="h-16 px-4 bg-zinc-900 rounded-xl flex items-center shadow-shape gap-3">
       <button
@@ -25,7 +29,7 @@ const InviteGuestsStep = ({
 
       <div className="w-px h-6 bg-zinc-800" />
 
-      <Button type="button" onClick={() => setIsConfirmModalOpen(true)}>
+      <Button type="button" onClick={()=>setIsConfirmModalOpen(true)}>
         Confirmar viagem <ArrowRight className="size-5" />
       </Button>
     </div>

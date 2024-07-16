@@ -1,66 +1,30 @@
 import { User, X } from "lucide-react"
-import React, { FormEvent } from "react"
+import { useFormContext } from "react-hook-form"
 import { useNavigate } from "react-router-dom"
 import Button from "../../components/Button"
 import { api } from "../../lib/axios"
-import { ConfirmTripModalProps } from "../../types"
 import { formatTripDate } from "../../utils/functions"
+import { TripForm } from "../../validation/schemas"
+import { ConfirmTripModalProps } from "../../validation/types"
 
-const ConfirmTripModal = ({
-  setIsConfirmModalOpen,
-  tripData,
-  setTripData,
-}: ConfirmTripModalProps) => {
+const ConfirmTripModal = ({ setIsConfirmModalOpen }: ConfirmTripModalProps) => {
   const navigate = useNavigate()
+  const { handleSubmit, watch, register } = useFormContext<TripForm>()
+
+  const [destination, from, to] = watch(["destination", "starts_at", "ends_at"])
 
   const formattedDate =
-    formatTripDate(tripData.date?.from, tripData.date?.to) ||
-    "Você não selecionou uma data válida"
+    formatTripDate(from, to) || "Você não selecionou uma data válida"
 
-  function onNameChange(event: React.FormEvent<HTMLInputElement>) {
-    const name = event.currentTarget.value
-    setTripData((prev) => ({ ...prev, ownerName: name }))
+  async function createTrip(data: TripForm) {
+    const response = await api.post("/trips", data)
+
+    const { id } = response.data
+    navigate(`/trips/${id}`)
   }
 
-  function onEmailChange(event: React.FormEvent<HTMLInputElement>) {
-    const email = event.currentTarget.value
-    setTripData((prev) => ({ ...prev, ownerEmail: email }))
-  }
-
-  async function createTrip(event: FormEvent<HTMLFormElement>) {
-    event.preventDefault()
-
-    const { date, destination, guestsEmails, ownerEmail, ownerName } = tripData
-
-    if (!date?.from || !date?.to) {
-      console.warn("Data inválida")
-      return
-    }
-    if (!destination) {
-      console.warn("Destino inválido")
-      return
-    }
-    if (!guestsEmails) {
-      console.warn("Selecione seus convidados")
-      return
-    }
-    if (!ownerName || !ownerEmail) {
-      console.warn("Preencha seu nome e e-mail")
-      return
-    }
-
-    const response = await api.post("/trips", {
-      destination: destination,
-      starts_at: date?.from,
-      ends_at: date?.to,
-      emails_to_invite: guestsEmails,
-      owner_name: ownerName,
-      owner_email: ownerEmail,
-    })
-
-    const { tripId } = response.data
-
-    navigate(`/trips/${tripId}`)
+  function onSubmitError() {
+    setIsConfirmModalOpen(false)
   }
 
   return (
@@ -77,24 +41,21 @@ const ConfirmTripModal = ({
           </div>
           <p className="text-small text-zinc-400">
             Para concluir a criação da viagem para{" "}
-            <span className="font-semibold text-zinc-100">
-              {tripData.destination}
-            </span>{" "}
+            <span className="font-semibold text-zinc-100">{destination}</span>{" "}
             nas datas de{" "}
             <span className="font-semibold text-zinc-100">{formattedDate}</span>{" "}
             preencha seus dados abaixo:
           </p>
         </div>
 
-        <form className="space-y-3" onSubmit={createTrip}>
+        <form className="space-y-3" onSubmit={handleSubmit(createTrip, onSubmitError)}>
           <div className="px-4 h-14 py-2.5 border border-zinc-800 bg-zinc-950 rounded-lg flex gap-2.5 items-center">
             <User className="size-5 text-zinc-400" />
 
             <input
-              name="name"
               className="bg-transparent flex-1 outline-none"
               placeholder="Digite o e-mail do convidado"
-              onChange={onNameChange}
+              {...register('owner_name')}
             />
           </div>
 
@@ -103,10 +64,9 @@ const ConfirmTripModal = ({
 
             <input
               type="email"
-              name="email"
               className="bg-transparent flex-1 outline-none"
               placeholder="Seu e-mail pessoal"
-              onChange={onEmailChange}
+              {...register('owner_email')}
             />
           </div>
 

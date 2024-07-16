@@ -14,7 +14,7 @@ export type Trip = {
   destination: string
   starts_at: string
   ends_at: string
-  is_confirmed: boolean
+  is_confirmed: boolean // TO DO => verificar necessidade do campo na tabela
 }
 
 export type Participant = {
@@ -36,24 +36,17 @@ export type Activity = {
 export type DestinationAndDateStepProps = {
   isGuestInputOpen: boolean
   setIsGuestInputOpen: (isOpen: boolean) => void
-  tripData: TripData
-  setTripData: Dispatch<SetStateAction<TripData>>
 }
 
 export type InviteGuestsStepProps = {
-  guestEmails: string[]
   setIsGuestModalOpen: (isOpen: boolean) => void
   setIsConfirmModalOpen: (isOpen: boolean) => void
 }
 
 export type ConfirmTripModalProps = {
   setIsConfirmModalOpen: (isOpen: boolean) => void
-  tripData: TripData
-  setTripData: Dispatch<SetStateAction<TripData>>
 }
 
 export type InviteGuestsModalProps = {
-  tripData: TripData
-  setTripData: Dispatch<SetStateAction<TripData>>
   setIsGuestModalOpen: Dispatch<SetStateAction<boolean>>
 }

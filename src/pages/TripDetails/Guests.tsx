@@ -3,7 +3,7 @@ import { useEffect, useState } from "react"
 import { useParams } from "react-router-dom"
 import Button from "../../components/Button"
 import { api } from "../../lib/axios"
-import { Participant } from "../../types"
+import { Participant } from "../../validation/types"
 
 const Guests = () => {
   const { tripId } = useParams()
