@@ -16,7 +16,7 @@ const DestinationAndDateStep = ({
 
   const { register, watch, setValue } = useFormContext<TripForm>()
 
-  const [from, to] = watch(["starts_at", "ends_at", "destination"])
+  const [from, to] = watch(["startsAt", "endsAt", "destination"])
 
   const date = {
     from: from ? new Date(from) : undefined,
@@ -26,8 +26,8 @@ const DestinationAndDateStep = ({
   const formattedDate = formatTripDate(from, to) || "Quando"
 
   function onSelectDate(dateRange: DateRange | undefined) {
-    if (dateRange?.from) setValue("starts_at", dateRange?.from?.toString())
-    if (dateRange?.to) setValue("ends_at", dateRange?.to.toString())
+    if (dateRange?.from) setValue("startsAt", dateRange?.from?.toString())
+    if (dateRange?.to) setValue("endsAt", dateRange?.to.toString())
   }
 
   return (

@@ -11,7 +11,7 @@ const ConfirmTripModal = ({ setIsConfirmModalOpen }: ConfirmTripModalProps) => {
   const navigate = useNavigate()
   const { handleSubmit, watch, register } = useFormContext<TripForm>()
 
-  const [destination, from, to] = watch(["destination", "starts_at", "ends_at"])
+  const [destination, from, to] = watch(["destination", "startsAt", "endsAt"])
 
   const formattedDate =
     formatTripDate(from, to) || "Você não selecionou uma data válida"
@@ -55,7 +55,7 @@ const ConfirmTripModal = ({ setIsConfirmModalOpen }: ConfirmTripModalProps) => {
             <input
               className="bg-transparent flex-1 outline-none"
               placeholder="Digite o e-mail do convidado"
-              {...register('owner_name')}
+              {...register('ownerName')}
             />
           </div>
 
@@ -66,7 +66,7 @@ const ConfirmTripModal = ({ setIsConfirmModalOpen }: ConfirmTripModalProps) => {
               type="email"
               className="bg-transparent flex-1 outline-none"
               placeholder="Seu e-mail pessoal"
-              {...register('owner_email')}
+              {...register('ownerEmail')}
             />
           </div>
 

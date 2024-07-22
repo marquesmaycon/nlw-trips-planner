@@ -1,8 +1,14 @@
 import { Calendar, Tag, X } from "lucide-react"
 import Button from "../../components/Button"
-import { FormEvent } from "react"
 import { api } from "../../lib/axios"
 import { useParams } from "react-router-dom"
+import { useForm } from "react-hook-form"
+import {
+  activityDefaultValues,
+  ActivityForm,
+  activitySchema,
+} from "../../validation/schemas"
+import { zodResolver } from "@hookform/resolvers/zod"
 
 type CreateActivityModalProps = {
   setIsActivityModalOpen: (value: boolean) => void
@@ -13,22 +19,17 @@ const CreateActivityModal = ({
 }: CreateActivityModalProps) => {
   const { tripId } = useParams()
 
-  async function createActivity(event: FormEvent<HTMLFormElement>) {
-    event.preventDefault()
+  const {
+    handleSubmit,
+    register,
+    formState: { errors },
+  } = useForm<ActivityForm>({
+    defaultValues: activityDefaultValues,
+    resolver: zodResolver(activitySchema),
+  })
 
-    const data = new FormData(event.currentTarget)
-    const title = data.get("title")?.toString()
-    const when = data.get("when")?.toString()
-
-    if (!title || !when) {
-      return
-    }
-
-    await api.post(`/trips/${tripId}/activities`, {
-      title,
-      occurs_at: when,
-    })
-
+  async function onSubmit(data: ActivityForm) {
+    await api.post(`/trips/${tripId}/activities`, data)
     setIsActivityModalOpen(false)
   }
 
@@ -47,14 +48,14 @@ const CreateActivityModal = ({
           </p>
         </div>
 
-        <form onSubmit={createActivity} className="space-y-3">
+        <form onSubmit={handleSubmit(onSubmit)} className="space-y-3">
           <div className="px-4 h-14 py-2.5 border border-zinc-800 bg-zinc-950 rounded-lg flex gap-2.5 items-center">
             <Tag className="size-5 text-zinc-400" />
 
             <input
-              name="title"
-              placeholder="Qual a atividade?"
               className="bg-transparent text-lg placeholder-zinc-400 flex-1 outline-none"
+              placeholder="Qual a atividade?"
+              {...register("name")}
             />
           </div>
 
@@ -63,11 +64,20 @@ const CreateActivityModal = ({
 
             <input
               type="datetime-local"
-              name="when"
               placeholder="Data e horário da atividade"
               className="bg-transparent text-lg placeholder-zinc-400 flex-1 outline-none"
+              {...register("startsAt")}
             />
           </div>
+
+          <div>
+            {Object.entries(errors).map(([field, error]) => (
+              <p key={field} className="text-red-400 text-xs">
+                {error?.message}
+              </p>
+            ))}
+          </div>
+
           <Button type="submit" size="full">
             Salvar atividade
           </Button>
