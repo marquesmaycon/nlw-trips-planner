@@ -1,25 +1,28 @@
 import { CircleCheck } from "lucide-react"
 import { useEffect, useState } from "react"
 import { useParams } from "react-router-dom"
-import { api } from "../../lib/axios"
-import { Activity } from "../../validation/types"
+import { ActivitiesByDay } from "../../validation/types"
 import { format } from "date-fns"
 
 import { ptBR } from "date-fns/locale"
+import { activitiesController } from "../../controllers/ActivitiesController"
 
 const Activities = () => {
   const { tripId } = useParams()
-  const [activities, setActivities] = useState<Activity[]>([])
+  const [activities, setActivities] = useState<ActivitiesByDay[]>([])
 
   useEffect(() => {
-    api.get(`/trips/${tripId}/activities`).then((response) => {
-      setActivities(response.data.activities)
-    })
+    if (!tripId) return
+    const fetchActivities = async () => {
+      const activities = await activitiesController.getActivitiesByDay(tripId)
+      setActivities(activities)
+    }
+    fetchActivities()
   }, [tripId])
 
   return (
     <div className="space-y-8">
-      {activities.map((activity) => (
+      {activities?.map((activity) => (
         <div key={activity.date} className="space-y-2.5 opacity-60">
           <div className="flex gap-2 items-baseline">
             <span className="text-xl text-zinc-300 font-semibold">
@@ -36,9 +39,9 @@ const Activities = () => {
                   key={item.id}
                   className="px-4 py-2.5 bg-zinc-900 shadow-shape rounded-xl flex items-center gap-3">
                   <CircleCheck className="size-5 text-lime-300" />
-                  <span className="text-zinc-100">{item.title}</span>
+                  <span className="text-zinc-100">{item.name}</span>
                   <span className="text-zinc-400 text-sm ml-auto">
-                    {format(item.occurs_at, "HH:mm")}h
+                    {format(item.starts_at, "HH:mm")}h
                   </span>
                 </div>
               ))}

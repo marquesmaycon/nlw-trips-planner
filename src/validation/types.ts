@@ -25,12 +25,19 @@ export type Participant = {
 }
 
 export type Activity = {
+  id: string
+  name: string
+  starts_at: string
+}
+
+export type ActivitiesByDay = {
   date: string
-  activities: Array<{
-    id: string
-    title: string
-    occurs_at: string
-  }>
+  activities: Activity[]
+}
+
+export type Link = {
+  title?: string
+  url: string
 }
 
 export type DestinationAndDateStepProps = {

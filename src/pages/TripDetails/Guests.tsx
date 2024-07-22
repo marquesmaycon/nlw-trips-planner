@@ -2,19 +2,22 @@ import { CheckCircle2, CircleDashed, UserCog } from "lucide-react"
 import { useEffect, useState } from "react"
 import { useParams } from "react-router-dom"
 import Button from "../../components/Button"
-import { api } from "../../lib/axios"
 import { Participant } from "../../validation/types"
+import { participantsController } from "../../controllers/ParticipantsController"
 
 const Guests = () => {
   const { tripId } = useParams()
   const [participants, setParticipants] = useState<Participant[]>([])
 
   useEffect(() => {
-    api.get(`/trips/${tripId}/participants`).then((response) => {
-      setParticipants(response.data.participants)
-    })
+    if (!tripId) return
+    const fetchParticipants = async () => {
+      const participants = await participantsController.getResources(tripId)
+      setParticipants(participants)
+    }
+    fetchParticipants()
   }, [tripId])
-  
+
   return (
     <div className="space-y-6">
       <h2 className="font-semibold text-xl">Convidados</h2>
