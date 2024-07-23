@@ -14,6 +14,7 @@ export default class TripResourceBaseController<Resource = any> {
   }
 
   async editResource(resourceId: string, data: Partial<Resource>): Promise<Resource> {
+    console.log('editResource', resourceId, data)
     const response = await api.put(`/${this.resource}/${resourceId}`, data)
     return response.data
   }

@@ -1,4 +1,4 @@
-import { CircleCheck, Plus, Trash } from "lucide-react"
+import { CircleCheck, CircleDashed, Plus, Trash } from "lucide-react"
 import { useEffect, useState } from "react"
 import { useParams } from "react-router-dom"
 import { ActivitiesByDay } from "../../validation/types"
@@ -30,6 +30,13 @@ const Activities = () => {
     fetchActivities()
   }
 
+  const toggleActvtDone = async (id: string, isDone: number) => {
+    await activitiesController.editResource(id, {
+      isDone: isDone === 1 ? 0 : 1,
+    })
+    fetchActivities()
+  }
+
   return (
     <div className="flex-1 space-y-6">
       <div className="flex items-center justify-between">
@@ -47,7 +54,8 @@ const Activities = () => {
             <div key={activity.date} className={`space-y-2.5 `}>
               <div className="flex gap-2 items-baseline">
                 <span className="text-xl text-zinc-300 font-semibold">
-                  Dia {format(parseISO(activity.date), "d")} {/* TO DO => ADD MÊS */}
+                  Dia {format(parseISO(activity.date), "d")}{" "}
+                  {/* TO DO => ADD MÊS */}
                 </span>
                 <span className="text-xs text-zinc-500">
                   {format(activity.date, "EEE", { locale: ptBR })}
@@ -61,10 +69,24 @@ const Activities = () => {
                     return (
                       <div
                         key={item.id}
-                        className={`px-4 py-2.5 bg-zinc-900 shadow-shape rounded-xl flex items-center gap-3 ${
+                        className={`group px-4 py-2.5 bg-zinc-900 shadow-shape rounded-xl flex items-center gap-3 ${
                           isDoneOrLate ? "opacity-60" : ""
                         }`}>
-                        <CircleCheck className="size-5 text-lime-300" />
+                        {item.isDone ? (
+                          <CircleCheck
+                            className="size-5 text-lime-300 cursor-pointer"
+                            onClick={() =>
+                              toggleActvtDone(item.id, item.isDone)
+                            }
+                          />
+                        ) : (
+                          <CircleDashed
+                            className="size-5 text-zinc-400 cursor-pointer"
+                            onClick={() =>
+                              toggleActvtDone(item.id, item.isDone)
+                            }
+                          />
+                        )}
                         {/* TO DO => circulo pontilhado para atividades nao completadas */}
                         <span className="text-zinc-100">{item.name}</span>
                         <span className="text-zinc-400 text-sm ml-auto">
@@ -72,7 +94,7 @@ const Activities = () => {
                         </span>
                         {/* TO DO => botao excluir atividade */}
                         <Trash
-                          className="size-5 text-zinc-400 hover:text-red-500 cursor-pointer"
+                          className="size-5 text-zinc-400 group-hover:text-red-500 transition-all ease-in duration-200 cursor-pointer"
                           onClick={() => excluirAtividade(item.id)}
                         />
                       </div>

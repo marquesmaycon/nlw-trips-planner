@@ -27,7 +27,19 @@ export const activitySchema = z.object({
 
 export const activityDefaultValues = {
   name: '',
-  startsAt: '2024-07-28T20:05',
+  startsAt: '',
 }
 
 export type ActivityForm = z.infer<typeof activitySchema>
+
+export const linkSchema = z.object({
+  title: z.string().min(2, 'O nome deve ter no mínimo 2 caracteres'),
+  url: z.string().url('url inválida').min(1, 'A data da atividade é obrigatória'),
+})
+
+export const linkDefaultValues = {
+  title: '',
+  url: '',
+}
+
+export type LinkForm = z.infer<typeof linkSchema>
