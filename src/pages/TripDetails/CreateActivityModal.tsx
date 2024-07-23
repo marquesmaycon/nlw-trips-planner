@@ -12,10 +12,12 @@ import { zodResolver } from "@hookform/resolvers/zod"
 
 type CreateActivityModalProps = {
   setIsActivityModalOpen: (value: boolean) => void
+  fetchActivities: () => void
 }
 
 const CreateActivityModal = ({
   setIsActivityModalOpen,
+  fetchActivities
 }: CreateActivityModalProps) => {
   const { tripId } = useParams()
 
@@ -29,7 +31,9 @@ const CreateActivityModal = ({
   })
 
   async function onSubmit(data: ActivityForm) {
-    await api.post(`/trips/${tripId}/activities`, data)
+    const response = await api.post(`/trips/${tripId}/activities`, data)
+    if(!response.data) return
+    fetchActivities()
     setIsActivityModalOpen(false)
   }
 

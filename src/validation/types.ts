@@ -27,7 +27,8 @@ export type Participant = {
 export type Activity = {
   id: string
   name: string
-  starts_at: string
+  startsAt: string
+  isDone: number
 }
 
 export type ActivitiesByDay = {

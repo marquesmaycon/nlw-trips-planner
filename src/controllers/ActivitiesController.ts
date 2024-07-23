@@ -7,7 +7,8 @@ class ActivitiesController extends TripResourceBaseController<Activity> {
     super('activities')
   }
 
-  async getActivitiesByDay(tripId: string): Promise<ActivitiesByDay[]> {
+  async getActivitiesByDay(tripId?: string): Promise<ActivitiesByDay[]> {
+    if (!tripId) []
     const response = await api.get(`/trips/${tripId}/${this.resource}/by-day`)
     return response.data
   }

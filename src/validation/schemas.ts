@@ -27,7 +27,7 @@ export const activitySchema = z.object({
 
 export const activityDefaultValues = {
   name: '',
-  startsAt: '',
+  startsAt: '2024-07-28T20:05',
 }
 
 export type ActivityForm = z.infer<typeof activitySchema>
