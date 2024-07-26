@@ -32,6 +32,13 @@ export const activityDefaultValues = {
 
 export type ActivityForm = z.infer<typeof activitySchema>
 
+export type EditActivitySchema = {
+  id: string
+  name?: string
+  startsAt?: string
+  isDone?: number
+}
+
 export const linkSchema = z.object({
   title: z.string().min(2, 'O nome deve ter no mínimo 2 caracteres'),
   url: z.string().url('url inválida').min(1, 'A data da atividade é obrigatória'),

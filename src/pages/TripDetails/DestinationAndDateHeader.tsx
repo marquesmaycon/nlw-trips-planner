@@ -1,23 +1,13 @@
 import { Calendar, MapPin, Settings2 } from "lucide-react"
-import Button from "../../components/Button"
 import { useParams } from "react-router-dom"
-import { useEffect, useState } from "react"
-import { Trip } from "../../validation/types"
+import Button from "../../components/Button"
+import { useGetTrip } from "../../hooks/queryAndMutations"
 import { formatTripDate } from "../../utils/functions"
-import { tripController } from "../../controllers/TripsController"
 
 const DestinationAndDateHeader = () => {
   const { tripId } = useParams()
-  const [trip, setTrip] = useState<Trip | undefined>()
 
-  useEffect(() => {
-    if (!tripId) return
-    const fetchTrip = async () => {
-      const trip = await tripController.getTrip(tripId)
-      setTrip(trip)
-    }
-    fetchTrip()
-  }, [tripId])
+  const { data: trip } = useGetTrip(tripId!)
 
   const formattedDate = formatTripDate(trip?.starts_at, trip?.ends_at)
 

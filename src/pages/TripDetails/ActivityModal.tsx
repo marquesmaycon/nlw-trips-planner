@@ -1,39 +1,64 @@
+import { zodResolver } from "@hookform/resolvers/zod"
 import { Calendar, Tag, X } from "lucide-react"
-import Button from "../../components/Button"
-import { useParams } from "react-router-dom"
+import { useEffect } from "react"
 import { useForm } from "react-hook-form"
+import { useParams } from "react-router-dom"
+import { queryClient } from "../../App"
+import Button from "../../components/Button"
+import {
+  useCreateActivity,
+  useEditActivity
+} from "../../hooks/queryAndMutations"
 import {
   activityDefaultValues,
   ActivityForm,
   activitySchema,
 } from "../../validation/schemas"
-import { zodResolver } from "@hookform/resolvers/zod"
-import { activitiesController } from "../../controllers/ActivitiesController"
+import { ActivitiesByDay } from "../../validation/types"
 
-type CreateActivityModalProps = {
+type ActivityModalProps = {
   setIsActivityModalOpen: (value: boolean) => void
-  fetchActivities: () => void
+  mode: "edit" | "create"
+  activityId: string | null
 }
 
-const CreateActivityModal = ({
+const ActivityModal = ({
   setIsActivityModalOpen,
-  fetchActivities
-}: CreateActivityModalProps) => {
+  mode,
+  activityId,
+}: ActivityModalProps) => {
   const { tripId } = useParams()
 
   const {
     handleSubmit,
     register,
+    reset,
     formState: { errors },
   } = useForm<ActivityForm>({
     defaultValues: activityDefaultValues,
     resolver: zodResolver(activitySchema),
   })
 
+  const crrAcitivity = queryClient
+    .getQueryData<ActivitiesByDay[]>(["activities", tripId])
+    ?.find((activity) =>
+      activity.activities.find((activity) => activity.id === activityId)
+    )
+    ?.activities.find((activity) => activity.id === activityId)
+
+  useEffect(() => {
+    if (mode === "edit" && crrAcitivity) {
+      reset(crrAcitivity)
+    }
+  }, [crrAcitivity])
+
+  const { mutateAsync: createActivity } = useCreateActivity(tripId!)
+  const { mutateAsync: editActivity } = useEditActivity(tripId!)
+
   async function onSubmit(data: ActivityForm) {
-    const newActivity = await activitiesController.createResource(tripId!, data)
-    if(!newActivity) return
-    fetchActivities()
+    mode === "edit"
+      ? await editActivity({ id: activityId!, ...data })
+      : await createActivity(data)
     setIsActivityModalOpen(false)
   }
 
@@ -42,7 +67,9 @@ const CreateActivityModal = ({
       <div className="w-[640px] rounded-xl py-5 px-6 shadow-shape bg-zinc-900 space-y-5">
         <div className="space-y-2">
           <div className="flex justify-between items-center">
-            <h2 className="text-lg font-semibold">Cadastrar atividade</h2>
+            <h2 className="text-lg font-semibold">
+              {mode === "create" ? "Criar" : "Editar"} atividade
+            </h2>
             <button type="button" onClick={() => setIsActivityModalOpen(false)}>
               <X className="text-zinc-400 size-5" />
             </button>
@@ -57,6 +84,7 @@ const CreateActivityModal = ({
             <Tag className="size-5 text-zinc-400" />
 
             <input
+              min=""
               className="bg-transparent text-lg placeholder-zinc-400 flex-1 outline-none"
               placeholder="Qual a atividade?"
               {...register("name")}
@@ -91,4 +119,4 @@ const CreateActivityModal = ({
   )
 }
 
-export default CreateActivityModal
+export default ActivityModal

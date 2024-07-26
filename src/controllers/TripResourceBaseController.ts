@@ -8,13 +8,17 @@ export default class TripResourceBaseController<Resource = any> {
     return response.data
   }
 
+  // async getResource(resourceId: string): Promise<Resource> {
+  //   const response = await api.get(`/${this.resource}/${resourceId}`)
+  //   return response.data
+  // }
+
   async createResource(tripId: string, data: Partial<Resource>): Promise<Resource> {
     const response = await api.post(`/trips/${tripId}/${this.resource}`, data)
     return response.data
   }
 
   async editResource(resourceId: string, data: Partial<Resource>): Promise<Resource> {
-    console.log('editResource', resourceId, data)
     const response = await api.put(`/${this.resource}/${resourceId}`, data)
     return response.data
   }

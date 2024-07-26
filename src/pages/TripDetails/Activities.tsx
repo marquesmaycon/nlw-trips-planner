@@ -1,47 +1,48 @@
-import { CircleCheck, CircleDashed, Plus, Trash } from "lucide-react"
-import { useEffect, useState } from "react"
-import { useParams } from "react-router-dom"
-import { ActivitiesByDay } from "../../validation/types"
 import { format, parseISO } from "date-fns"
+import { CircleCheck, CircleDashed, Edit, Plus, Trash } from "lucide-react"
+import { useState } from "react"
+import { useParams } from "react-router-dom"
 
 import { ptBR } from "date-fns/locale"
-import { activitiesController } from "../../controllers/ActivitiesController"
-import CreateActivityModal from "./CreateActivityModal"
 import Button from "../../components/Button"
+import {
+  useDeleteAcitivity,
+  useEditActivity,
+  useGetActivities,
+} from "../../hooks/queryAndMutations"
 import { isBeforeRightNow } from "../../utils/functions"
+import ActivityModal from "./ActivityModal"
 
 const Activities = () => {
   const { tripId } = useParams()
-  const [activities, setActivities] = useState<ActivitiesByDay[]>([])
   const [isActivityModalOpen, setIsActivityModalOpen] = useState(false)
+  const [modalMode, setModalMode] = useState<"edit" | "create">("create")
+  const [currentAcitivityId, setCurrentAcitivityId] = useState<string | null>(
+    null
+  )
 
-  useEffect(() => {
-    fetchActivities()
-  }, [tripId])
+  const { data: activities } = useGetActivities(tripId!)
 
-  const fetchActivities = async () => {
-    if (!tripId) return
-    const activities = await activitiesController.getActivitiesByDay(tripId)
-    setActivities(activities)
+  const { mutateAsync: editActivity } = useEditActivity(tripId!)
+  const { mutateAsync: deleteActivity } = useDeleteAcitivity(tripId!)
+
+  function openEditModal(activityId: string) {
+    setIsActivityModalOpen(true)
+    setModalMode("edit")
+    setCurrentAcitivityId(activityId)
   }
 
-  const excluirAtividade = async (id: string) => {
-    await activitiesController.deleteResource(id)
-    fetchActivities()
-  }
-
-  const toggleActvtDone = async (id: string, isDone: number) => {
-    await activitiesController.editResource(id, {
-      isDone: isDone === 1 ? 0 : 1,
-    })
-    fetchActivities()
+  function openCreateModal() {
+    setIsActivityModalOpen(true)
+    setModalMode("create")
+    setCurrentAcitivityId(null)
   }
 
   return (
     <div className="flex-1 space-y-6">
       <div className="flex items-center justify-between">
         <h2 className="text-3xl font-semibold">Atividades</h2>
-        <Button onClick={() => setIsActivityModalOpen(true)}>
+        <Button onClick={openCreateModal}>
           <Plus className="size-5" />
           Cadastrar atividade
         </Button>
@@ -63,39 +64,37 @@ const Activities = () => {
               </div>
               {activity.activities.length > 0 ? (
                 <div className="space-y-2 5">
-                  {activity.activities.map((item) => {
+                  {activity.activities.map(({ id, isDone, startsAt, name }) => {
                     const isDoneOrLate =
-                      item.isDone === 1 || isBeforeRightNow(item.startsAt)
+                      isDone === 1 || isBeforeRightNow(startsAt)
                     return (
                       <div
-                        key={item.id}
+                        key={id}
                         className={`group px-4 py-2.5 bg-zinc-900 shadow-shape rounded-xl flex items-center gap-3 ${
                           isDoneOrLate ? "opacity-60" : ""
                         }`}>
-                        {item.isDone ? (
+                        {isDone ? (
                           <CircleCheck
                             className="size-5 text-lime-300 cursor-pointer"
-                            onClick={() =>
-                              toggleActvtDone(item.id, item.isDone)
-                            }
+                            onClick={() => editActivity({ id, isDone })}
                           />
                         ) : (
                           <CircleDashed
                             className="size-5 text-zinc-400 cursor-pointer"
-                            onClick={() =>
-                              toggleActvtDone(item.id, item.isDone)
-                            }
+                            onClick={() => editActivity({ id, isDone })}
                           />
                         )}
-                        {/* TO DO => circulo pontilhado para atividades nao completadas */}
-                        <span className="text-zinc-100">{item.name}</span>
+                        <span className="text-zinc-100">{name}</span>
                         <span className="text-zinc-400 text-sm ml-auto">
-                          {format(item.startsAt, "HH'h'mm")}
+                          {format(startsAt, "HH'h'mm")}
                         </span>
-                        {/* TO DO => botao excluir atividade */}
+                        <Edit
+                          className="size-5 text-zinc-400 group-hover:text-lime-300 transition-all ease-in duration-200 cursor-pointer"
+                          onClick={() => openEditModal(id)}
+                        />
                         <Trash
                           className="size-5 text-zinc-400 group-hover:text-red-500 transition-all ease-in duration-200 cursor-pointer"
-                          onClick={() => excluirAtividade(item.id)}
+                          onClick={() => deleteActivity(id)}
                         />
                       </div>
                     )
@@ -111,9 +110,10 @@ const Activities = () => {
         })}
 
         {isActivityModalOpen && (
-          <CreateActivityModal
+          <ActivityModal
             setIsActivityModalOpen={setIsActivityModalOpen}
-            fetchActivities={fetchActivities}
+            mode={modalMode}
+            activityId={currentAcitivityId}
           />
         )}
       </div>
