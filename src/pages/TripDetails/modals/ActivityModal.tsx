@@ -3,11 +3,11 @@ import { Calendar, Tag, X } from "lucide-react"
 import { useEffect } from "react"
 import { useForm } from "react-hook-form"
 import { useParams } from "react-router-dom"
-import { queryClient } from "../../App"
-import Button from "../../components/Button"
-import { useCreateActivity, useEditActivity } from "../../hooks/queryAndMutations"
-import { activityDefaultValues, ActivityForm, activitySchema } from "../../validation/schemas"
-import { ActivitiesByDay } from "../../validation/types"
+import { queryClient } from "../../../App"
+import Button from "../../../components/Button"
+import { useCreateActivity, useEditActivity } from "../../../hooks/queryAndMutations"
+import { activityDefaultValues, ActivitySchema, activitySchema } from "../../../validation/schemas"
+import { ActivitiesByDay } from "../../../validation/types"
 
 type ActivityModalProps = {
   setIsActivityModalOpen: (value: boolean) => void
@@ -23,7 +23,7 @@ const ActivityModal = ({ setIsActivityModalOpen, activityId }: ActivityModalProp
     register,
     reset,
     formState: { errors },
-  } = useForm<ActivityForm>({
+  } = useForm<ActivitySchema>({
     defaultValues: activityDefaultValues,
     resolver: zodResolver(activitySchema),
   })
@@ -38,10 +38,10 @@ const ActivityModal = ({ setIsActivityModalOpen, activityId }: ActivityModalProp
     ?.find((activity) => activity.activities.find((activity) => activity.id === activityId))
     ?.activities.find((activity) => activity.id === activityId)
 
-  const { mutateAsync: createActivity } = useCreateActivity(tripId!)
-  const { mutateAsync: editActivity } = useEditActivity(tripId!)
+  const { mutateAsync: createActivity, isPending: isCreating} = useCreateActivity(tripId!)
+  const { mutateAsync: editActivity, isPending: isEditing } = useEditActivity(tripId!)
 
-  async function onSubmit(data: ActivityForm) {
+  async function onSubmit(data: ActivitySchema) {
     activityId ? await editActivity({ id: activityId!, ...data }) : await createActivity(data)
     setIsActivityModalOpen(false)
   }
@@ -90,7 +90,7 @@ const ActivityModal = ({ setIsActivityModalOpen, activityId }: ActivityModalProp
             ))}
           </div>
 
-          <Button type="submit" size="full">
+          <Button type="submit" size="full" isLoading={isCreating || isEditing}>
             Salvar atividade
           </Button>
         </form>

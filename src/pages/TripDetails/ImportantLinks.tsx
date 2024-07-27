@@ -3,7 +3,7 @@ import { useState } from "react"
 import { useParams } from "react-router-dom"
 import Button from "../../components/Button"
 import { useDeleteLink, useGetLinks } from "../../hooks/queryAndMutations"
-import LinkModal from "./LinkModal"
+import LinkModal from "./modals/LinkModal"
 
 const ImportantLinks = () => {
   const { tripId } = useParams()
@@ -11,15 +11,13 @@ const ImportantLinks = () => {
   const [currLinkId, setCurrLinkId] = useState<string | null>(null)
 
   const { data: links } = useGetLinks(tripId!)
-  const { mutateAsync: deleteLink } = useDeleteLink(tripId!)
-
+  const { mutateAsync: deleteLink, variables } = useDeleteLink(tripId!)
   function openCreateModal() {
     setIsLinkModalOpen(true)
     setCurrLinkId(null)
   }
 
   function openEditModal(linkId: string) {
-    console.log(linkId)
     setIsLinkModalOpen(true)
     setCurrLinkId(linkId)
   }
@@ -31,7 +29,7 @@ const ImportantLinks = () => {
       <div className="space-y-5">
         {links?.length === 0 && <p className="text-sm text-zinc-500">Nenhum link cadastrado para essa viagem</p>}
         {links?.map((link, index) => (
-          <div key={link.id} className="group flex items-center justify-between gap-4">
+          <div key={link.id} className={`group flex items-center justify-between gap-4 ${variables == link.id ? "animate-pulse" : ""}`}>
             <div className="space-y-1.5">
               <span className="block font-medium text-zinc-100">{link.title ?? `Link ${index + 1}`}</span>
               <a href={link.url} target="_blank" className="block shrink-0 truncate text-xs text-zinc-400 hover:text-zinc-200">

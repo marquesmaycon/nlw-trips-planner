@@ -7,7 +7,8 @@ import { ptBR } from "date-fns/locale"
 import Button from "../../components/Button"
 import { useDeleteAcitivity, useEditActivity, useGetActivities } from "../../hooks/queryAndMutations"
 import { isBeforeRightNow } from "../../utils/functions"
-import ActivityModal from "./ActivityModal"
+import ActivityModal from "./modals/ActivityModal"
+
 
 const Activities = () => {
   const { tripId } = useParams()
@@ -17,7 +18,7 @@ const Activities = () => {
   const { data: activities } = useGetActivities(tripId!)
 
   const { mutateAsync: editActivity } = useEditActivity(tripId!)
-  const { mutateAsync: deleteActivity } = useDeleteAcitivity(tripId!)
+  const { mutateAsync: deleteActivity, variables } = useDeleteAcitivity(tripId!)
 
   function openEditModal(activityId: string) {
     setIsActivityModalOpen(true)
@@ -42,37 +43,35 @@ const Activities = () => {
       <div className="space-y-8">
         {activities?.map((activity) => {
           return (
-            <div key={activity.date} className={`space-y-2.5 `}>
-              <div className="flex gap-2 items-baseline">
-                <span className="text-xl text-zinc-300 font-semibold">
+            <div key={activity.date} className={`space-y-2.5`}>
+              <div className="flex items-baseline gap-2">
+                <span className="text-xl font-semibold text-zinc-300">
                   Dia {format(parseISO(activity.date), "d")} {/* TO DO => ADD MÊS */}
                 </span>
                 <span className="text-xs text-zinc-500">{format(activity.date, "EEE", { locale: ptBR })}</span>
               </div>
               {activity.activities.length > 0 ? (
-                <div className="space-y-2 5">
+                <div className="5 space-y-2">
                   {activity.activities.map(({ id, isDone, startsAt, name }) => {
                     const isDoneOrLate = isDone === 1 || isBeforeRightNow(startsAt)
                     const toggleDone = () => editActivity({ id, isDone: isDone === 1 ? 0 : 1 })
                     return (
                       <div
                         key={id}
-                        className={`group px-4 py-2.5 bg-zinc-900 shadow-shape rounded-xl flex items-center gap-3 ${
-                          isDoneOrLate ? "opacity-60" : ""
-                        }`}>
+                        className={`group flex items-center gap-3 rounded-xl bg-zinc-900 px-4 py-2.5 shadow-shape ${isDoneOrLate ? "opacity-60" : ""} ${variables == id ? "animate-pulse" : ""}`}>
                         {isDone ? (
-                          <CircleCheck className="size-5 text-lime-300 cursor-pointer" onClick={toggleDone} />
+                          <CircleCheck className="size-5 cursor-pointer text-lime-300" onClick={toggleDone} />
                         ) : (
-                          <CircleDashed className="size-5 text-zinc-400 cursor-pointer" onClick={toggleDone} />
+                          <CircleDashed className="size-5 cursor-pointer text-zinc-400" onClick={toggleDone} />
                         )}
                         <span className="text-zinc-100">{name}</span>
-                        <span className="text-zinc-400 text-sm ml-auto">{format(startsAt, "HH'h'mm")}</span>
+                        <span className="ml-auto text-sm text-zinc-400">{format(startsAt, "HH'h'mm")}</span>
                         <Pencil
-                          className="size-5 text-zinc-400 group-hover:text-lime-300 transition-all ease-in duration-200 cursor-pointer"
+                          className="size-5 cursor-pointer text-zinc-400 transition-all duration-200 ease-in group-hover:text-lime-300"
                           onClick={() => openEditModal(id)}
                         />
                         <Trash
-                          className="size-5 text-zinc-400 group-hover:text-red-500 transition-all ease-in duration-200 cursor-pointer"
+                          className="size-5 cursor-pointer text-zinc-400 transition-all duration-200 ease-in group-hover:text-red-500"
                           onClick={() => deleteActivity(id)}
                         />
                       </div>
@@ -80,7 +79,7 @@ const Activities = () => {
                   })}
                 </div>
               ) : (
-                <p className="text-zinc-500 text-sm">Nenhuma atividade cadastrada nessa data</p>
+                <p className="text-sm text-zinc-500">Nenhuma atividade cadastrada nessa data</p>
               )}
             </div>
           )

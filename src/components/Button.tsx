@@ -1,3 +1,4 @@
+import { LoaderCircle } from "lucide-react"
 import { ComponentProps, ReactNode } from "react"
 import { tv, VariantProps } from "tailwind-variants"
 
@@ -11,6 +12,9 @@ const buttonVariants = tv({
     size: {
       full: "w-full h-11",
     },
+    isLoading: {
+      true: "opacity-60 hover:bg-none cursor-not-allowed",
+    },
   },
   defaultVariants: {
     variant: "primary",
@@ -22,10 +26,10 @@ type ButtonProps = ComponentProps<"button"> &
     children: ReactNode
   }
 
-const Button = ({ children, variant, size, ...props }: ButtonProps) => {
+const Button = ({ children, variant, size, isLoading, ...props }: ButtonProps) => {
   return (
-    <button {...props} className={buttonVariants({ variant, size })}>
-      {children}
+    <button {...props} className={buttonVariants({ variant, size, isLoading })}>
+     {isLoading &&  <LoaderCircle className="animate-spin" />} {children}
     </button>
   )
 }

@@ -1,5 +1,5 @@
 import { api } from "../lib/axios"
-import { TripForm } from "../validation/schemas"
+import { TripSchema } from "../validation/schemas"
 import { Trip } from "../validation/types"
 
 class TripController<T extends Trip> {
@@ -8,7 +8,7 @@ class TripController<T extends Trip> {
     return response.data
   }
 
-  async createTrip(data: TripForm): Promise<T> {
+  async createTrip(data: TripSchema): Promise<T> {
     const response = await api.post("/trips", data)
     return response.data
   }

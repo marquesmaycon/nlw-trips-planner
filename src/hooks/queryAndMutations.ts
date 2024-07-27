@@ -2,7 +2,7 @@ import { useMutation, useQuery } from "@tanstack/react-query"
 import { queryClient } from "../App"
 import { activitiesController } from "../controllers/ActivitiesController"
 import { tripController } from "../controllers/TripsController"
-import { ActivityForm, EditActivitySchema, EditLinkSchema, LinkForm } from "../validation/schemas"
+import { ActivitySchema, EditActivitySchema, EditLinkSchema, EditParticipantSchema, LinkSchema, ParticipantSchema } from "../validation/schemas"
 import { participantsController } from "../controllers/ParticipantsController"
 import { linksController } from "../controllers/LinksController"
 
@@ -33,7 +33,7 @@ export const useGetActivities = (tripId: string) => {
 
 export const useCreateActivity = (tripId: string) => {
   return useMutation({
-    mutationFn: (data: ActivityForm) => activitiesController.createResource(tripId, data),
+    mutationFn: (data: ActivitySchema) => activitiesController.createResource(tripId, data),
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ["activities", tripId] })
     }
@@ -77,6 +77,33 @@ export const useGetParticipants = (tripId: string) => {
   })
 }
 
+export const useCreateParticipant = (tripId: string) => {
+  return useMutation({
+    mutationFn: (data: ParticipantSchema) => participantsController.createResource(tripId, data),
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ["participants", tripId] })
+    }
+  })
+}
+
+export const useEditParticipant = (tripId: string) => {
+  return useMutation({
+    mutationFn: (data: EditParticipantSchema) => participantsController.editResource(data.id, data),
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ["participants", tripId] })
+    }
+  })
+}
+
+export const useDeleteParticipant = (tripId: string) => {
+  return useMutation({
+    mutationFn: (participantId: string) => participantsController.deleteResource(participantId),
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ["participants", tripId] })
+    }
+  })
+}
+
 export const useGetLinks = (tripId: string) => {
   return useQuery({
     queryKey: ["links", tripId],
@@ -87,7 +114,7 @@ export const useGetLinks = (tripId: string) => {
 
 export const useCreateLink = (tripId: string) => {
   return useMutation({
-    mutationFn: (data: LinkForm) => linksController.createResource(tripId, data),
+    mutationFn: (data: LinkSchema) => linksController.createResource(tripId, data),
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ["links", tripId] })
     }

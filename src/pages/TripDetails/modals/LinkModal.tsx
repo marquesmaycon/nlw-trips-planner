@@ -2,12 +2,12 @@ import { zodResolver } from "@hookform/resolvers/zod"
 import { Link2, Tag, X } from "lucide-react"
 import { useForm } from "react-hook-form"
 import { useParams } from "react-router-dom"
-import Button from "../../components/Button"
-import { linkDefaultValues, LinkForm, linkSchema } from "../../validation/schemas"
+import Button from "../../../components/Button"
+import { linkDefaultValues, LinkSchema, linkSchema } from "../../../validation/schemas"
 import { useEffect } from "react"
-import { queryClient } from "../../App"
-import { Link } from "../../validation/types"
-import { useCreateLink, useEditLink } from "../../hooks/queryAndMutations"
+import { queryClient } from "../../../App"
+import { Link } from "../../../validation/types"
+import { useCreateLink, useEditLink } from "../../../hooks/queryAndMutations"
 
 type LinkModalProps = {
   setIsLinkModalOpen: (value: boolean) => void
@@ -22,7 +22,7 @@ const LinkModal = ({ setIsLinkModalOpen, linkId }: LinkModalProps) => {
     register,
     formState: { errors },
     reset,
-  } = useForm<LinkForm>({
+  } = useForm<LinkSchema>({
     defaultValues: linkDefaultValues,
     resolver: zodResolver(linkSchema),
   })
@@ -36,8 +36,8 @@ const LinkModal = ({ setIsLinkModalOpen, linkId }: LinkModalProps) => {
 
   const { mutateAsync: createLink, isPending: isCreating } = useCreateLink(tripId!)
   const { mutateAsync: editLink, isPending: isEditing } = useEditLink(tripId!)
-  console.log(isEditing, isCreating)
-  async function onSubmit(data: LinkForm) {
+
+  async function onSubmit(data: LinkSchema) {
     linkId ? await editLink({ id: linkId, ...data }) : await createLink(data)
     setIsLinkModalOpen(false)
   }
@@ -80,8 +80,8 @@ const LinkModal = ({ setIsLinkModalOpen, linkId }: LinkModalProps) => {
             ))}
           </div>
 
-          <Button type="submit" size="full" loading={isCreating || isEditing}>
-            Salvar link
+          <Button type="submit" size="full" isLoading={isCreating}>
+            {isCreating || isEditing ? "Salvando..." : "Salvar link"}
           </Button>
         </form>
       </div>
