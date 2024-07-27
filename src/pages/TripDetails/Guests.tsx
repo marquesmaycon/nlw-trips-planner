@@ -1,45 +1,26 @@
-import { CheckCircle2, CircleDashed, UserCog } from "lucide-react"
-import { useEffect, useState } from "react"
 import { useParams } from "react-router-dom"
+import { CheckCircle2, CircleDashed, UserCog } from "lucide-react"
+
 import Button from "../../components/Button"
-import { Participant } from "../../validation/types"
-import { participantsController } from "../../controllers/ParticipantsController"
+import { useGetParticipants } from "../../hooks/queryAndMutations"
 
 const Guests = () => {
   const { tripId } = useParams()
-  const [participants, setParticipants] = useState<Participant[]>([])
 
-  useEffect(() => {
-    if (!tripId) return
-    const fetchParticipants = async () => {
-      const participants = await participantsController.getResources(tripId)
-      setParticipants(participants)
-    }
-    fetchParticipants()
-  }, [tripId])
+  const { data: participants } = useGetParticipants(tripId!)
 
   return (
     <div className="space-y-6">
       <h2 className="font-semibold text-xl">Convidados</h2>
 
       <div className="space-y-5">
-        {participants.map((participant, index) => (
-          <div
-            key={participant.id}
-            className="flex items-center justify-between gap-4">
+        {participants?.map((participant, index) => (
+          <div key={participant.id} className="flex items-center justify-between gap-4">
             <div className="space-y-1.5">
-              <span className="block font-medium text-zinc-100">
-                {participant.name || `Convidado ${index}`}
-              </span>
-              <span className="block text-xs text-zinc-400 truncate shrink-0">
-                {participant.email}
-              </span>
+              <span className="block font-medium text-zinc-100">{participant.name || `Convidado ${index}`}</span>
+              <span className="block text-xs text-zinc-400 truncate shrink-0">{participant.email}</span>
             </div>
-            {participant.is_confirmed ? (
-              <CheckCircle2 className="size-5 text-green-400" />
-            ) : (
-              <CircleDashed className="size-5 text-zinc-400" />
-            )}
+            {participant.isConfirmed ? <CheckCircle2 className="size-5 text-green-400" /> : <CircleDashed className="size-5 text-zinc-400" />}
           </div>
         ))}
       </div>

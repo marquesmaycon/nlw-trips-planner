@@ -9,7 +9,7 @@ const DestinationAndDateHeader = () => {
 
   const { data: trip } = useGetTrip(tripId!)
 
-  const formattedDate = formatTripDate(trip?.starts_at, trip?.ends_at)
+  const formattedDate = formatTripDate(trip?.startsAt, trip?.endsAt)
 
   return (
     <div className="px-4 h-16 rounded-xl bg-zinc-900 shadow-shape flex items-center justify-between">

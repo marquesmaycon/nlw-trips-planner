@@ -50,3 +50,9 @@ export const linkDefaultValues = {
 }
 
 export type LinkForm = z.infer<typeof linkSchema>
+
+export type EditLinkSchema = {
+  id: string
+  title?: string
+  url: string
+}

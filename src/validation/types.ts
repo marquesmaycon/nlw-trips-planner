@@ -12,16 +12,16 @@ export type TripData = {
 export type Trip = {
   id: string
   destination: string
-  starts_at: string
-  ends_at: string
-  is_confirmed: boolean // TO DO => verificar necessidade do campo na tabela
+  startsAt: string
+  endsAt: string
+  isConfirmed: boolean // TO DO => verificar necessidade do campo na tabela
 }
 
 export type Participant = {
   id: string
   name: string | null
   email: string
-  is_confirmed: boolean
+  isConfirmed: boolean
 }
 
 export type Activity = {

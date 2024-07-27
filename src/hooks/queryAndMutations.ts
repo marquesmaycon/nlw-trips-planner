@@ -2,7 +2,9 @@ import { useMutation, useQuery } from "@tanstack/react-query"
 import { queryClient } from "../App"
 import { activitiesController } from "../controllers/ActivitiesController"
 import { tripController } from "../controllers/TripsController"
-import { ActivityForm, EditActivitySchema } from "../validation/schemas"
+import { ActivityForm, EditActivitySchema, EditLinkSchema, LinkForm } from "../validation/schemas"
+import { participantsController } from "../controllers/ParticipantsController"
+import { linksController } from "../controllers/LinksController"
 
 
 export const useGetTrip = (tripId: string) => {
@@ -63,6 +65,49 @@ export const useToggleActivityDone = (tripId: string) => {
     }),
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ["activities", tripId] })
+    }
+  })
+}
+
+export const useGetParticipants = (tripId: string) => {
+  return useQuery({
+    queryKey: ["participants", tripId],
+    queryFn: () => participantsController.getResources(tripId),
+    enabled: !!tripId,
+  })
+}
+
+export const useGetLinks = (tripId: string) => {
+  return useQuery({
+    queryKey: ["links", tripId],
+    queryFn: () => linksController.getResources(tripId),
+    enabled: !!tripId,
+  })
+}
+
+export const useCreateLink = (tripId: string) => {
+  return useMutation({
+    mutationFn: (data: LinkForm) => linksController.createResource(tripId, data),
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ["links", tripId] })
+    }
+  })
+}
+
+export const useEditLink = (tripId: string) => {
+  return useMutation({
+    mutationFn: (data: EditLinkSchema) => linksController.editResource(data.id, data),
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ["links", tripId] })
+    }
+  })
+}
+
+export const useDeleteLink = (tripId: string) => {
+  return useMutation({
+    mutationFn: (linkId: string) => linksController.deleteResource(linkId),
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ["links", tripId] })
     }
   })
 }

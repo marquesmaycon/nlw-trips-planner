@@ -1,25 +1,18 @@
 import { format, parseISO } from "date-fns"
-import { CircleCheck, CircleDashed, Edit, Plus, Trash } from "lucide-react"
+import { CircleCheck, CircleDashed, Pencil, Plus, Trash } from "lucide-react"
 import { useState } from "react"
 import { useParams } from "react-router-dom"
 
 import { ptBR } from "date-fns/locale"
 import Button from "../../components/Button"
-import {
-  useDeleteAcitivity,
-  useEditActivity,
-  useGetActivities,
-} from "../../hooks/queryAndMutations"
+import { useDeleteAcitivity, useEditActivity, useGetActivities } from "../../hooks/queryAndMutations"
 import { isBeforeRightNow } from "../../utils/functions"
 import ActivityModal from "./ActivityModal"
 
 const Activities = () => {
   const { tripId } = useParams()
   const [isActivityModalOpen, setIsActivityModalOpen] = useState(false)
-  const [modalMode, setModalMode] = useState<"edit" | "create">("create")
-  const [currentAcitivityId, setCurrentAcitivityId] = useState<string | null>(
-    null
-  )
+  const [currActivityId, setCurrAcitivityId] = useState<string | null>(null)
 
   const { data: activities } = useGetActivities(tripId!)
 
@@ -28,14 +21,12 @@ const Activities = () => {
 
   function openEditModal(activityId: string) {
     setIsActivityModalOpen(true)
-    setModalMode("edit")
-    setCurrentAcitivityId(activityId)
+    setCurrAcitivityId(activityId)
   }
 
   function openCreateModal() {
     setIsActivityModalOpen(true)
-    setModalMode("create")
-    setCurrentAcitivityId(null)
+    setCurrAcitivityId(null)
   }
 
   return (
@@ -50,23 +41,19 @@ const Activities = () => {
 
       <div className="space-y-8">
         {activities?.map((activity) => {
-          // TO DO => melhorar feedback visual de dias passados
           return (
             <div key={activity.date} className={`space-y-2.5 `}>
               <div className="flex gap-2 items-baseline">
                 <span className="text-xl text-zinc-300 font-semibold">
-                  Dia {format(parseISO(activity.date), "d")}{" "}
-                  {/* TO DO => ADD MÊS */}
+                  Dia {format(parseISO(activity.date), "d")} {/* TO DO => ADD MÊS */}
                 </span>
-                <span className="text-xs text-zinc-500">
-                  {format(activity.date, "EEE", { locale: ptBR })}
-                </span>
+                <span className="text-xs text-zinc-500">{format(activity.date, "EEE", { locale: ptBR })}</span>
               </div>
               {activity.activities.length > 0 ? (
                 <div className="space-y-2 5">
                   {activity.activities.map(({ id, isDone, startsAt, name }) => {
-                    const isDoneOrLate =
-                      isDone === 1 || isBeforeRightNow(startsAt)
+                    const isDoneOrLate = isDone === 1 || isBeforeRightNow(startsAt)
+                    const toggleDone = () => editActivity({ id, isDone: isDone === 1 ? 0 : 1 })
                     return (
                       <div
                         key={id}
@@ -74,21 +61,13 @@ const Activities = () => {
                           isDoneOrLate ? "opacity-60" : ""
                         }`}>
                         {isDone ? (
-                          <CircleCheck
-                            className="size-5 text-lime-300 cursor-pointer"
-                            onClick={() => editActivity({ id, isDone })}
-                          />
+                          <CircleCheck className="size-5 text-lime-300 cursor-pointer" onClick={toggleDone} />
                         ) : (
-                          <CircleDashed
-                            className="size-5 text-zinc-400 cursor-pointer"
-                            onClick={() => editActivity({ id, isDone })}
-                          />
+                          <CircleDashed className="size-5 text-zinc-400 cursor-pointer" onClick={toggleDone} />
                         )}
                         <span className="text-zinc-100">{name}</span>
-                        <span className="text-zinc-400 text-sm ml-auto">
-                          {format(startsAt, "HH'h'mm")}
-                        </span>
-                        <Edit
+                        <span className="text-zinc-400 text-sm ml-auto">{format(startsAt, "HH'h'mm")}</span>
+                        <Pencil
                           className="size-5 text-zinc-400 group-hover:text-lime-300 transition-all ease-in duration-200 cursor-pointer"
                           onClick={() => openEditModal(id)}
                         />
@@ -101,21 +80,13 @@ const Activities = () => {
                   })}
                 </div>
               ) : (
-                <p className="text-zinc-500 text-sm">
-                  Nenhuma atividade cadastrada nessa data
-                </p>
+                <p className="text-zinc-500 text-sm">Nenhuma atividade cadastrada nessa data</p>
               )}
             </div>
           )
         })}
 
-        {isActivityModalOpen && (
-          <ActivityModal
-            setIsActivityModalOpen={setIsActivityModalOpen}
-            mode={modalMode}
-            activityId={currentAcitivityId}
-          />
-        )}
+        {isActivityModalOpen && <ActivityModal setIsActivityModalOpen={setIsActivityModalOpen} activityId={currActivityId} />}
       </div>
     </div>
   )
