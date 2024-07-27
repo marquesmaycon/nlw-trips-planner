@@ -3,7 +3,7 @@ import { useState } from "react"
 import { FormProvider, useForm } from "react-hook-form"
 import {
   tripDefaultValues,
-  TripForm,
+  TripSchema,
   tripSchema,
 } from "../../validation/schemas"
 import ConfirmTripModal from "./ConfirmTripModal"
@@ -16,7 +16,7 @@ function CreateTripPage() {
   const [isGuestModalOpen, setIsGuestModalOpen] = useState(false)
   const [isConfirmModalOpen, setIsConfirmModalOpen] = useState(false)
 
-  const hookForm = useForm<TripForm>({
+  const hookForm = useForm<TripSchema>({
     defaultValues: tripDefaultValues,
     resolver: zodResolver(tripSchema),
   })

@@ -3,19 +3,19 @@ import { useFormContext } from "react-hook-form"
 import { useNavigate } from "react-router-dom"
 import Button from "../../components/Button"
 import { formatTripDate } from "../../utils/functions"
-import { TripForm } from "../../validation/schemas"
+import { TripSchema } from "../../validation/schemas"
 import { ConfirmTripModalProps } from "../../validation/types"
 import { useMutation } from "@tanstack/react-query"
 import { tripController } from "../../controllers/TripsController"
 
 const ConfirmTripModal = ({ setIsConfirmModalOpen }: ConfirmTripModalProps) => {
   const navigate = useNavigate()
-  const { handleSubmit, watch, register } = useFormContext<TripForm>()
+  const { handleSubmit, watch, register } = useFormContext<TripSchema>()
 
   const [destination, from, to] = watch(["destination", "startsAt", "endsAt"])
 
-  const { mutateAsync: createTrip } = useMutation({
-    mutationFn: (data: TripForm) => tripController.createTrip(data),
+  const { mutateAsync: createTrip, isPending } = useMutation({
+    mutationFn: (data: TripSchema) => tripController.createTrip(data),
     onSuccess: (data) => {
       navigate(`/trips/${data.id}`)
     },
@@ -23,7 +23,7 @@ const ConfirmTripModal = ({ setIsConfirmModalOpen }: ConfirmTripModalProps) => {
 
   const formattedDate = formatTripDate(from, to) || "Você não selecionou uma data válida"
 
-  async function onSubmit(data: TripForm) {
+  async function onSubmit(data: TripSchema) {
     await createTrip(data)
   }
 
@@ -60,7 +60,7 @@ const ConfirmTripModal = ({ setIsConfirmModalOpen }: ConfirmTripModalProps) => {
             <input type="email" className="bg-transparent flex-1 outline-none" placeholder="Seu e-mail pessoal" {...register("ownerEmail")} />
           </div>
 
-          <Button type="submit" size="full">
+          <Button type="submit" size="full" isLoading={isPending}>
             Confirmar criação da viagem
           </Button>
         </form>

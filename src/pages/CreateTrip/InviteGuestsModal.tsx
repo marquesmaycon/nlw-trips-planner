@@ -2,10 +2,10 @@ import { AtSign, Plus, X } from "lucide-react"
 import Button from "../../components/Button"
 import { InviteGuestsModalProps } from "../../validation/types"
 import { useFormContext } from "react-hook-form"
-import { TripForm } from "../../validation/schemas"
+import { TripSchema } from "../../validation/schemas"
 
 const InviteGuestsModal = ({ setIsGuestModalOpen }: InviteGuestsModalProps) => {
-  const { watch, setValue } = useFormContext<TripForm>()
+  const { watch, setValue } = useFormContext<TripSchema>()
 
   const emails = watch("emails_to_invite")
 

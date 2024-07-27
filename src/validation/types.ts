@@ -19,7 +19,7 @@ export type Trip = {
 
 export type Participant = {
   id: string
-  name: string | null
+  name?: string
   email: string
   isConfirmed: boolean
 }

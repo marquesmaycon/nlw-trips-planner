@@ -6,7 +6,7 @@ import Button from "../../../components/Button"
 import { DestinationAndDateStepProps } from "../../../validation/types"
 import { formatTripDate } from "../../../utils/functions"
 import { useFormContext } from "react-hook-form"
-import { TripForm } from "../../../validation/schemas"
+import { TripSchema } from "../../../validation/schemas"
 
 const DestinationAndDateStep = ({
   isGuestInputOpen,
@@ -14,7 +14,7 @@ const DestinationAndDateStep = ({
 }: DestinationAndDateStepProps) => {
   const [isDatePickerOpen, setIsDatePickerOpen] = useState(false)
 
-  const { register, watch, setValue } = useFormContext<TripForm>()
+  const { register, watch, setValue } = useFormContext<TripSchema>()
 
   const [from, to] = watch(["startsAt", "endsAt", "destination"])
 

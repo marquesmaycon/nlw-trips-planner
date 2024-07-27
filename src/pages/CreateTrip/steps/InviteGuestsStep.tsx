@@ -2,13 +2,13 @@ import { ArrowRight, UserRoundPlus } from "lucide-react"
 import Button from "../../../components/Button"
 import { InviteGuestsStepProps } from "../../../validation/types"
 import { useFormContext } from "react-hook-form"
-import { TripForm } from "../../../validation/schemas"
+import { TripSchema } from "../../../validation/schemas"
 
 const InviteGuestsStep = ({
   setIsConfirmModalOpen,
   setIsGuestModalOpen,
 }: InviteGuestsStepProps) => {
-  const { watch } = useFormContext<TripForm>()
+  const { watch } = useFormContext<TripSchema>()
   const emails = watch("emails_to_invite")
 
   return (

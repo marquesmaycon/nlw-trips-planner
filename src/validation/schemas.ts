@@ -18,7 +18,7 @@ export const tripDefaultValues = {
   ownerEmail: '',
 }
 
-export type TripForm = z.infer<typeof tripSchema>
+export type TripSchema = z.infer<typeof tripSchema>
 
 export const activitySchema = z.object({
   name: z.string().min(2, 'O nome deve ter no mínimo 2 caracteres'),
@@ -30,12 +30,10 @@ export const activityDefaultValues = {
   startsAt: '',
 }
 
-export type ActivityForm = z.infer<typeof activitySchema>
+export type ActivitySchema = z.infer<typeof activitySchema>
 
-export type EditActivitySchema = {
+export type EditActivitySchema = Partial<ActivitySchema> & {
   id: string
-  name?: string
-  startsAt?: string
   isDone?: number
 }
 
@@ -49,10 +47,24 @@ export const linkDefaultValues = {
   url: '',
 }
 
-export type LinkForm = z.infer<typeof linkSchema>
+export type LinkSchema = z.infer<typeof linkSchema>
 
-export type EditLinkSchema = {
+export type EditLinkSchema = LinkSchema & {
   id: string
-  title?: string
-  url: string
+}
+
+export const participantSchema = z.object({
+  name: z.string().min(2, 'O nome deve ter no mínimo 2 caracteres'),
+  email: z.string().email({ message: 'Email inválido' }),
+})
+
+export const participantDefaultValues = {
+  name: '',
+  email: '',
+}
+
+export type ParticipantSchema = z.infer<typeof participantSchema>
+
+export type EditParticipantSchema = ParticipantSchema & {
+  id: string
 }
