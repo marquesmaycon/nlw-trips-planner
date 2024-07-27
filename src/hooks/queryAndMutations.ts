@@ -1,10 +1,11 @@
 import { useMutation, useQuery } from "@tanstack/react-query"
-import { queryClient } from "../App"
-import { activitiesController } from "../controllers/ActivitiesController"
+
+import { queryClient } from "../lib/tanStackQuery"
 import { tripController } from "../controllers/TripsController"
-import { ActivitySchema, EditActivitySchema, EditLinkSchema, EditParticipantSchema, LinkSchema, ParticipantSchema } from "../validation/schemas"
-import { participantsController } from "../controllers/ParticipantsController"
 import { linksController } from "../controllers/LinksController"
+import { activitiesController } from "../controllers/ActivitiesController"
+import { participantsController } from "../controllers/ParticipantsController"
+import { ActivitySchema, EditActivitySchema, EditLinkSchema, EditParticipantSchema, LinkSchema, ParticipantSchema } from "../validation/schemas"
 
 
 export const useGetTrip = (tripId: string) => {
@@ -22,14 +23,6 @@ export const useGetActivities = (tripId: string) => {
     enabled: !!tripId,
   })
 }
-
-// export const useGetActivity = (tripId: string, activityId: string) => {
-//   return useQuery({
-//     queryKey: ["activity", tripId, activityId],
-//     queryFn: () => activitiesController.getResource(activityId),
-//     enabled: !!activityId,
-//   })
-// }
 
 export const useCreateActivity = (tripId: string) => {
   return useMutation({

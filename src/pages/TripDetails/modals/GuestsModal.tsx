@@ -2,12 +2,12 @@ import { zodResolver } from "@hookform/resolvers/zod"
 import { AtSign, CircleUser, Plus, X } from "lucide-react"
 import { useForm } from "react-hook-form"
 import { useParams } from "react-router-dom"
-import { queryClient } from "../../../App"
 import Button from "../../../components/Button"
 import { useCreateParticipant, useDeleteParticipant, useEditParticipant } from "../../../hooks/queryAndMutations"
 import { participantDefaultValues, ParticipantSchema, participantSchema } from "../../../validation/schemas"
 import { Participant } from "../../../validation/types"
 import { useEffect } from "react"
+import { queryClient } from "../../../lib/tanStackQuery"
 
 type GuestsModalProps = {
   setIsGuestsModalOpen: (value: boolean) => void
@@ -63,9 +63,11 @@ const GuestsModal = ({ setIsGuestsModalOpen, participantId }: GuestsModalProps) 
               key={guest.id}
               className={`flex items-center gap-2 rounded-md bg-zinc-800 px-2.5 py-1.5 ${[variables, participantId].includes(guest.id) ? "animate-pulse" : ""}`}>
               <span className="text-zinc-300">{guest.name || guest.email}</span>
-              <button type="button">
-                <X className="size-4 text-zinc-400" onClick={() => deleteParticipant(guest.id)} />
-              </button>
+              {participantId != guest.id && (
+                <button type="button">
+                  <X className="size-4 text-zinc-400" onClick={() => deleteParticipant(guest.id)} />
+                </button>
+              )}
             </div>
           ))}
         </div>

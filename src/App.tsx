@@ -1,7 +1,9 @@
+import { QueryClientProvider } from "@tanstack/react-query"
 import { createBrowserRouter, RouterProvider } from "react-router-dom"
+
 import CreateTripPage from "./pages/CreateTrip/CreateTripPage"
 import TripDetailsPage from "./pages/TripDetails/TripDetailsPage"
-import { QueryClient, QueryClientProvider } from "@tanstack/react-query"
+import { queryClient } from "./lib/tanStackQuery"
 
 const router = createBrowserRouter([
   {
@@ -14,7 +16,6 @@ const router = createBrowserRouter([
   },
 ])
 
-export const queryClient = new QueryClient()
 
 function App() {
   return (
