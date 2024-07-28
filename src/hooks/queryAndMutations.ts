@@ -5,7 +5,7 @@ import { tripController } from "../controllers/TripsController"
 import { linksController } from "../controllers/LinksController"
 import { activitiesController } from "../controllers/ActivitiesController"
 import { participantsController } from "../controllers/ParticipantsController"
-import { ActivitySchema, EditActivitySchema, EditLinkSchema, EditParticipantSchema, LinkSchema, ParticipantSchema } from "../validation/schemas"
+import { ActivitySchema, EditActivitySchema, EditLinkSchema, EditParticipantSchema, EditTripSchema, LinkSchema, ParticipantSchema } from "../validation/schemas"
 
 
 export const useGetTrip = (tripId: string) => {
@@ -13,6 +13,16 @@ export const useGetTrip = (tripId: string) => {
     queryKey: ["trip", tripId],
     queryFn: () => tripController.getTrip(tripId),
     enabled: !!tripId,
+  })
+}
+
+export const useEditTrip = (tripId: string) => {
+  return useMutation({
+    mutationFn: (data: EditTripSchema) => tripController.editTrip(tripId, data),
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ["trip", tripId] })
+      queryClient.invalidateQueries({ queryKey: ["activities", tripId] })
+    }
   })
 }
 

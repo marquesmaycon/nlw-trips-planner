@@ -1,18 +1,14 @@
+import { useEffect } from "react"
+import { useParams } from "react-router-dom"
+import { useForm } from "react-hook-form"
 import { zodResolver } from "@hookform/resolvers/zod"
 import { AtSign, CircleUser, Plus, X } from "lucide-react"
-import { useForm } from "react-hook-form"
-import { useParams } from "react-router-dom"
+
 import Button from "../../../components/Button"
 import { useCreateParticipant, useDeleteParticipant, useEditParticipant } from "../../../hooks/queryAndMutations"
 import { participantDefaultValues, ParticipantSchema, participantSchema } from "../../../validation/schemas"
-import { Participant } from "../../../validation/types"
-import { useEffect } from "react"
+import { GuestsModalProps, Participant } from "../../../validation/types"
 import { queryClient } from "../../../lib/tanStackQuery"
-
-type GuestsModalProps = {
-  setIsGuestsModalOpen: (value: boolean) => void
-  participantId: string | null
-}
 
 const GuestsModal = ({ setIsGuestsModalOpen, participantId }: GuestsModalProps) => {
   const { tripId } = useParams()

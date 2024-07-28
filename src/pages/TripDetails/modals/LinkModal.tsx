@@ -1,18 +1,14 @@
+import { useEffect } from "react"
+import { useParams } from "react-router-dom"
+import { useForm } from "react-hook-form"
 import { zodResolver } from "@hookform/resolvers/zod"
 import { Link2, Tag, X } from "lucide-react"
-import { useForm } from "react-hook-form"
-import { useParams } from "react-router-dom"
-import Button from "../../../components/Button"
-import { linkDefaultValues, LinkSchema, linkSchema } from "../../../validation/schemas"
-import { useEffect } from "react"
-import { queryClient } from "../../../App"
-import { Link } from "../../../validation/types"
-import { useCreateLink, useEditLink } from "../../../hooks/queryAndMutations"
 
-type LinkModalProps = {
-  setIsLinkModalOpen: (value: boolean) => void
-  linkId: string | null
-}
+import Button from "../../../components/Button"
+import { queryClient } from "../../../lib/tanStackQuery"
+import { Link, LinkModalProps } from "../../../validation/types"
+import { linkDefaultValues, LinkSchema, linkSchema } from "../../../validation/schemas"
+import { useCreateLink, useEditLink } from "../../../hooks/queryAndMutations"
 
 const LinkModal = ({ setIsLinkModalOpen, linkId }: LinkModalProps) => {
   const { tripId } = useParams()

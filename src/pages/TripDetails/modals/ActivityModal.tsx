@@ -1,19 +1,15 @@
-import { zodResolver } from "@hookform/resolvers/zod"
-import { Calendar, Tag, X } from "lucide-react"
 import { useEffect } from "react"
-import { useForm } from "react-hook-form"
 import { useParams } from "react-router-dom"
-import { queryClient } from "../../../App"
+import { Calendar, Tag, X } from "lucide-react"
+import { useForm } from "react-hook-form"
+import { zodResolver } from "@hookform/resolvers/zod"
+
+
 import Button from "../../../components/Button"
+import { queryClient } from "../../../lib/tanStackQuery"
 import { useCreateActivity, useEditActivity } from "../../../hooks/queryAndMutations"
 import { activityDefaultValues, ActivitySchema, activitySchema } from "../../../validation/schemas"
-import { ActivitiesByDay } from "../../../validation/types"
-
-type ActivityModalProps = {
-  setIsActivityModalOpen: (value: boolean) => void
-  // mode: "edit" | "create"
-  activityId: string | null
-}
+import { ActivitiesByDay, ActivityModalProps, Trip } from "../../../validation/types"
 
 const ActivityModal = ({ setIsActivityModalOpen, activityId }: ActivityModalProps) => {
   const { tripId } = useParams()
@@ -27,6 +23,9 @@ const ActivityModal = ({ setIsActivityModalOpen, activityId }: ActivityModalProp
     defaultValues: activityDefaultValues,
     resolver: zodResolver(activitySchema),
   })
+
+  const { mutateAsync: createActivity, isPending: isCreating} = useCreateActivity(tripId!)
+  const { mutateAsync: editActivity, isPending: isEditing } = useEditActivity(tripId!)
   
   useEffect(() => {
     if (!activityId) return
@@ -37,9 +36,8 @@ const ActivityModal = ({ setIsActivityModalOpen, activityId }: ActivityModalProp
     .getQueryData<ActivitiesByDay[]>(["activities", tripId])
     ?.find((activity) => activity.activities.find((activity) => activity.id === activityId))
     ?.activities.find((activity) => activity.id === activityId)
-
-  const { mutateAsync: createActivity, isPending: isCreating} = useCreateActivity(tripId!)
-  const { mutateAsync: editActivity, isPending: isEditing } = useEditActivity(tripId!)
+  
+  const tripDetails = queryClient.getQueryData<Trip>(["trip", tripId])
 
   async function onSubmit(data: ActivitySchema) {
     activityId ? await editActivity({ id: activityId!, ...data }) : await createActivity(data)
@@ -64,7 +62,6 @@ const ActivityModal = ({ setIsActivityModalOpen, activityId }: ActivityModalProp
             <Tag className="size-5 text-zinc-400" />
 
             <input
-              min=""
               className="bg-transparent text-lg placeholder-zinc-400 flex-1 outline-none"
               placeholder="Qual a atividade?"
               {...register("name")}
@@ -76,6 +73,8 @@ const ActivityModal = ({ setIsActivityModalOpen, activityId }: ActivityModalProp
 
             <input
               type="datetime-local"
+              min={tripDetails?.startsAt.split(".")[0]}
+              max={tripDetails?.endsAt.split(".")[0]}
               placeholder="Data e horário da atividade"
               className="bg-transparent text-lg placeholder-zinc-400 flex-1 outline-none"
               {...register("startsAt")}

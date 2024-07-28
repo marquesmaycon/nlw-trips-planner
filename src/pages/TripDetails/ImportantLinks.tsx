@@ -1,9 +1,10 @@
-import { Link2, Plus, Trash } from "lucide-react"
 import { useState } from "react"
 import { useParams } from "react-router-dom"
+import { Link2, Plus, Trash } from "lucide-react"
+
 import Button from "../../components/Button"
-import { useDeleteLink, useGetLinks } from "../../hooks/queryAndMutations"
 import LinkModal from "./modals/LinkModal"
+import { useDeleteLink, useGetLinks } from "../../hooks/queryAndMutations"
 
 const ImportantLinks = () => {
   const { tripId } = useParams()

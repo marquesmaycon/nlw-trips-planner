@@ -1,14 +1,13 @@
-import { format, parseISO } from "date-fns"
-import { CircleCheck, CircleDashed, Pencil, Plus, Trash } from "lucide-react"
 import { useState } from "react"
 import { useParams } from "react-router-dom"
-
+import { format, parseISO } from "date-fns"
 import { ptBR } from "date-fns/locale"
-import Button from "../../components/Button"
-import { useDeleteAcitivity, useEditActivity, useGetActivities } from "../../hooks/queryAndMutations"
-import { isBeforeRightNow } from "../../utils/functions"
-import ActivityModal from "./modals/ActivityModal"
+import { CircleCheck, CircleDashed, Pencil, Plus, Trash } from "lucide-react"
 
+import Button from "../../components/Button"
+import { isBeforeRightNow } from "../../utils/functions"
+import { useDeleteAcitivity, useEditActivity, useGetActivities } from "../../hooks/queryAndMutations"
+import ActivityModal from "./modals/ActivityModal"
 
 const Activities = () => {
   const { tripId } = useParams()

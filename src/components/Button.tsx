@@ -1,5 +1,5 @@
-import { LoaderCircle } from "lucide-react"
 import { ComponentProps, ReactNode } from "react"
+import { LoaderCircle } from "lucide-react"
 import { tv, VariantProps } from "tailwind-variants"
 
 const buttonVariants = tv({

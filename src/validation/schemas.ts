@@ -20,6 +20,15 @@ export const tripDefaultValues = {
 
 export type TripSchema = z.infer<typeof tripSchema>
 
+export const editTripSchema = z.object({
+  id: z.number(),
+  destination: z.string().min(2, 'O local deve ter no mínimo 2 caracteres'),
+  startsAt: z.string().min(1, 'A data de início é obrigatória'),
+  endsAt: z.string().min(1, 'A data de término é obrigatória'),
+})
+
+export type EditTripSchema = z.infer<typeof editTripSchema>
+
 export const activitySchema = z.object({
   name: z.string().min(2, 'O nome deve ter no mínimo 2 caracteres'),
   startsAt: z.string().min(1, 'A data da atividade é obrigatória'),
@@ -65,6 +74,7 @@ export const participantDefaultValues = {
 
 export type ParticipantSchema = z.infer<typeof participantSchema>
 
-export type EditParticipantSchema = ParticipantSchema & {
+export type EditParticipantSchema = Partial<ParticipantSchema> & {
   id: string
+  isConfirmed?: boolean
 }

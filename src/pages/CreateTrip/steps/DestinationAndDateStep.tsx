@@ -1,22 +1,20 @@
-import { ArrowRight, Calendar, MapPin, Settings2, X } from "lucide-react"
 import { useState } from "react"
+import { ArrowRight, Calendar, MapPin, Settings2, X } from "lucide-react"
+import { useFormContext } from "react-hook-form"
 import { DateRange, DayPicker } from "react-day-picker"
 import "react-day-picker/dist/style.css"
+
 import Button from "../../../components/Button"
 import { DestinationAndDateStepProps } from "../../../validation/types"
 import { formatTripDate } from "../../../utils/functions"
-import { useFormContext } from "react-hook-form"
 import { TripSchema } from "../../../validation/schemas"
 
-const DestinationAndDateStep = ({
-  isGuestInputOpen,
-  setIsGuestInputOpen,
-}: DestinationAndDateStepProps) => {
+const DestinationAndDateStep = ({ isGuestInputOpen, setIsGuestInputOpen }: DestinationAndDateStepProps) => {
   const [isDatePickerOpen, setIsDatePickerOpen] = useState(false)
 
   const { register, watch, setValue } = useFormContext<TripSchema>()
 
-  const [from, to] = watch(["startsAt", "endsAt", "destination"])
+  const [from, to] = watch(["startsAt", "endsAt"])
 
   const date = {
     from: from ? new Date(from) : undefined,
@@ -31,52 +29,44 @@ const DestinationAndDateStep = ({
   }
 
   return (
-    <div className="h-16 p-4 bg-zinc-900 rounded-xl flex items-center shadow-shape gap-3">
-      <div className="flex items-center gap-2 flex-1">
-        <MapPin className="text-zinc-400 size-5" />
+    <div className="flex h-16 items-center gap-3 rounded-xl bg-zinc-900 p-4 shadow-shape">
+      <div className="flex flex-1 items-center gap-2">
+        <MapPin className="size-5 text-zinc-400" />
         <input
           disabled={isGuestInputOpen}
           placeholder="Para onde você vai?"
-          className="bg-transparent text-lg placeholder-zinc-400 outline-none flex-1"
-          {...register('destination')}
+          className="flex-1 bg-transparent text-lg placeholder-zinc-400 outline-none"
+          {...register("destination")}
         />
       </div>
 
-      <button
-        disabled={isGuestInputOpen}
-        onClick={() => setIsDatePickerOpen(true)}
-        className="flex items-center gap-2 text-left text-zinc-400">
-        <Calendar className=" size-5" />
-        <span className="text-lg w-40">{formattedDate}</span>
+      <button disabled={isGuestInputOpen} onClick={() => setIsDatePickerOpen(true)} className="flex items-center gap-2 text-left text-zinc-400">
+        <Calendar className="size-5" />
+        <span className="w-40 text-lg">{formattedDate}</span>
       </button>
 
       {isDatePickerOpen && (
-        <div className="fixed inset-0 bg-black/60 flex items-center justify-center">
-          <div className="rounded-xl py-5 px-6 shadow-shape bg-zinc-900 space-y-5">
+        <div className="fixed inset-0 flex items-center justify-center bg-black/60">
+          <div className="space-y-5 rounded-xl bg-zinc-900 px-6 py-5 shadow-shape">
             <div className="space-y-2">
-              <div className="flex justify-between items-center">
+              <div className="flex items-center justify-between">
                 <h2 className="text-lg font-semibold">Selecione a data</h2>
-                <button
-                  type="button"
-                  onClick={() => setIsDatePickerOpen(false)}>
-                  <X className="text-zinc-400 size-5" />
+                <button type="button" onClick={() => setIsDatePickerOpen(false)}>
+                  <X className="size-5 text-zinc-400" />
                 </button>
               </div>
             </div>
 
             <DayPicker mode="range" selected={date} onSelect={onSelectDate} />
 
-            <Button
-              variant="secondary"
-              size="full"
-              onClick={() => setIsDatePickerOpen(false)}>
+            <Button variant="secondary" size="full" onClick={() => setIsDatePickerOpen(false)}>
               Confirmar <ArrowRight className="size-5" />
             </Button>
           </div>
         </div>
       )}
 
-      <div className="w-px h-6 bg-zinc-800" />
+      <div className="h-6 w-px bg-zinc-800" />
 
       {isGuestInputOpen ? (
         <Button onClick={() => setIsGuestInputOpen(false)} variant="secondary">

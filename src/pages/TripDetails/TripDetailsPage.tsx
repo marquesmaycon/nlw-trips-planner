@@ -1,7 +1,7 @@
-import Activities from "./Activities"
 import DestinationAndDateHeader from "./DestinationAndDateHeader"
-import Guests from "./Guests"
 import ImportantLinks from "./ImportantLinks"
+import Activities from "./Activities"
+import Guests from "./Guests"
 
 const TripDetailsPage = () => {
   return (

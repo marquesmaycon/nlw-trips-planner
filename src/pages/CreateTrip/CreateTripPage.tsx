@@ -1,11 +1,8 @@
-import { zodResolver } from "@hookform/resolvers/zod"
 import { useState } from "react"
 import { FormProvider, useForm } from "react-hook-form"
-import {
-  tripDefaultValues,
-  TripSchema,
-  tripSchema,
-} from "../../validation/schemas"
+import { zodResolver } from "@hookform/resolvers/zod"
+
+import { tripDefaultValues, TripSchema, tripSchema } from "../../validation/schemas"
 import ConfirmTripModal from "./ConfirmTripModal"
 import InviteGuestsModal from "./InviteGuestsModal"
 import DestinationAndDateStep from "./steps/DestinationAndDateStep"
@@ -25,31 +22,21 @@ function CreateTripPage() {
 
   return (
     <FormProvider {...hookForm}>
-      <div className="h-screen flex items-center justify-center bg-pattern bg-no-repeat bg-center">
-        <div className="max-w-3xl w-full px-6 text-center space-y-10">
-          <div className="flex flex-col gap-3 items-center">
+      <div className="flex h-screen items-center justify-center bg-pattern bg-center bg-no-repeat">
+        <div className="w-full max-w-3xl space-y-10 px-6 text-center">
+          <div className="flex flex-col items-center gap-3">
             <img src="/logo.svg" alt="Plann.er" className="" />
-            <p className="text-zinc-300 text-lg">
-              Convide seus amigos e planeje sua próxima viagem!
-            </p>
+            <p className="text-lg text-zinc-300">Convide seus amigos e planeje sua próxima viagem!</p>
           </div>
 
           <div className="space-y-4">
-            <DestinationAndDateStep
-              isGuestInputOpen={isGuestInputOpen}
-              setIsGuestInputOpen={setIsGuestInputOpen}
-            />
+            <DestinationAndDateStep isGuestInputOpen={isGuestInputOpen} setIsGuestInputOpen={setIsGuestInputOpen} />
 
-            {isGuestInputOpen && (
-              <InviteGuestsStep
-                setIsConfirmModalOpen={setIsConfirmModalOpen}
-                setIsGuestModalOpen={setIsGuestModalOpen}
-              />
-            )}
+            {isGuestInputOpen && <InviteGuestsStep setIsConfirmModalOpen={setIsConfirmModalOpen} setIsGuestModalOpen={setIsGuestModalOpen} />}
 
             <div>
               {Object.entries(errors).map(([field, error]) => (
-                <p key={field} className="text-red-400 text-xs">
+                <p key={field} className="text-xs text-red-400">
                   {error?.message}
                 </p>
               ))}
@@ -70,13 +57,9 @@ function CreateTripPage() {
           </div>
         </div>
 
-        {isGuestModalOpen && (
-          <InviteGuestsModal setIsGuestModalOpen={setIsGuestModalOpen} />
-        )}
+        {isGuestModalOpen && <InviteGuestsModal setIsGuestModalOpen={setIsGuestModalOpen} />}
 
-        {isConfirmModalOpen && (
-          <ConfirmTripModal setIsConfirmModalOpen={setIsConfirmModalOpen} />
-        )}
+        {isConfirmModalOpen && <ConfirmTripModal setIsConfirmModalOpen={setIsConfirmModalOpen} />}
       </div>
     </FormProvider>
   )
