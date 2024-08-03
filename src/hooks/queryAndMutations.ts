@@ -5,8 +5,22 @@ import { tripController } from "../controllers/TripsController"
 import { linksController } from "../controllers/LinksController"
 import { activitiesController } from "../controllers/ActivitiesController"
 import { participantsController } from "../controllers/ParticipantsController"
-import { ActivitySchema, EditActivitySchema, EditLinkSchema, EditParticipantSchema, EditTripSchema, LinkSchema, ParticipantSchema } from "../validation/schemas"
+import { ActivitySchema, RegisterAccountSchema, EditActivitySchema, EditLinkSchema, EditParticipantSchema, EditTripSchema, LinkSchema, ParticipantSchema, LoginSchema } from "../validation/schemas"
+import { authController } from "../controllers/AuthController"
+import { useNavigate } from "react-router-dom"
 
+export const useRegister = () => {
+  return useMutation({
+    mutationFn: (data: RegisterAccountSchema) => authController.register(data),
+  })
+}
+
+export const useLogin = () => {
+  return useMutation({
+    mutationKey: ['login'],
+    mutationFn: (data: LoginSchema) => authController.login(data),
+  })
+}
 
 export const useGetTrip = (tripId: string) => {
   return useQuery({

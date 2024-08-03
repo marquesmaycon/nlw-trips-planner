@@ -1,5 +1,31 @@
 import { z } from "zod";
 
+export const registerAccountSchema = z.object({
+  name: z.string().min(2, 'O nome deve ter no mínimo 2 caracteres'),
+  email: z.string().email({ message: 'Email inválido' }),
+  password: z.string().min(6, 'A senha deve ter no mínimo 6 caracteres'),
+})
+
+export const registerAccountDefaultValues = {
+  name: '',
+  email: '',
+  password: '',
+}
+
+export type RegisterAccountSchema = z.infer<typeof registerAccountSchema>
+
+export const loginSchema = z.object({
+  email: z.string().email({ message: 'Email inválido' }),
+  password: z.string().min(6, 'A senha deve ter no mínimo 6 caracteres'),
+})
+
+export const loginDefaultValues = {
+  email: '',
+  password: '',
+}
+
+export type LoginSchema = z.infer<typeof loginSchema>
+
 export const tripSchema = z.object({
   destination: z.string().min(2, 'O local deve ter no mínimo 2 caracteres'),
   startsAt: z.string().min(1, 'A data de início é obrigatória'),
