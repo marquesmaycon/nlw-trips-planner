@@ -5,7 +5,7 @@ import Button from "../../../components/Button"
 import { TripSchema } from "../../../validation/schemas"
 import { InviteGuestsStepProps } from "../../../validation/types"
 
-const InviteGuestsStep = ({ setIsConfirmModalOpen, setIsGuestModalOpen }: InviteGuestsStepProps) => {
+const InviteGuestsStep = ({ setIsGuestModalOpen }: InviteGuestsStepProps) => {
   const { watch } = useFormContext<TripSchema>()
   const emails = watch("emails_to_invite")
 
@@ -22,7 +22,7 @@ const InviteGuestsStep = ({ setIsConfirmModalOpen, setIsGuestModalOpen }: Invite
 
       <div className="h-6 w-px bg-zinc-800" />
 
-      <Button type="button" onClick={() => setIsConfirmModalOpen(true)}>
+      <Button type="submit">
         Confirmar viagem <ArrowRight className="size-5" />
       </Button>
     </div>

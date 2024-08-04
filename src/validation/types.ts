@@ -54,7 +54,6 @@ export type DestinationAndDateStepProps = {
 
 export type InviteGuestsStepProps = {
   setIsGuestModalOpen: (isOpen: boolean) => void
-  setIsConfirmModalOpen: (isOpen: boolean) => void
 }
 
 export type ConfirmTripModalProps = {

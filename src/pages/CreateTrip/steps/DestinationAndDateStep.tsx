@@ -40,7 +40,7 @@ const DestinationAndDateStep = ({ isGuestInputOpen, setIsGuestInputOpen }: Desti
         />
       </div>
 
-      <button disabled={isGuestInputOpen} onClick={() => setIsDatePickerOpen(true)} className="flex items-center gap-2 text-left text-zinc-400">
+      <button type="button" disabled={isGuestInputOpen} onClick={() => setIsDatePickerOpen(true)} className="flex items-center gap-2 text-left text-zinc-400">
         <Calendar className="size-5" />
         <span className="w-40 text-lg">{formattedDate}</span>
       </button>
@@ -59,7 +59,7 @@ const DestinationAndDateStep = ({ isGuestInputOpen, setIsGuestInputOpen }: Desti
 
             <DayPicker mode="range" selected={date} onSelect={onSelectDate} />
 
-            <Button variant="secondary" size="full" onClick={() => setIsDatePickerOpen(false)}>
+            <Button type="button" variant="secondary" size="full" onClick={() => setIsDatePickerOpen(false)}>
               Confirmar <ArrowRight className="size-5" />
             </Button>
           </div>
@@ -69,11 +69,11 @@ const DestinationAndDateStep = ({ isGuestInputOpen, setIsGuestInputOpen }: Desti
       <div className="h-6 w-px bg-zinc-800" />
 
       {isGuestInputOpen ? (
-        <Button onClick={() => setIsGuestInputOpen(false)} variant="secondary">
+        <Button type="button" onClick={() => setIsGuestInputOpen(false)} variant="secondary">
           Alterar local e data <Settings2 className="size-5" />
         </Button>
       ) : (
-        <Button onClick={() => setIsGuestInputOpen(true)}>
+        <Button type="button" onClick={() => setIsGuestInputOpen(true)}>
           Continuar <ArrowRight className="size-5" />
         </Button>
       )}

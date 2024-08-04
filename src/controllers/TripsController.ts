@@ -3,6 +3,11 @@ import { EditTripSchema, TripSchema } from "../validation/schemas"
 import { Trip } from "../validation/types"
 
 class TripController<T extends Trip> {
+  async getTrips(): Promise<T[]> {
+    const response = await api.get("/trips")
+    return response.data
+  }
+  
   async getTrip(id: string): Promise<T> {
     const response = await api.get(`/trips/${id}`)
     return response.data

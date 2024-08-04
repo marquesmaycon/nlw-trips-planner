@@ -35,13 +35,23 @@ const LoginPage = () => {
           <div className="flex h-14 items-center gap-2.5 rounded-lg border border-zinc-800 bg-zinc-950 px-4 py-2.5">
             <Mail className="size-5 text-zinc-400" />
 
-            <input className="flex-1 bg-transparent text-lg placeholder-zinc-400 outline-none" placeholder="E-mail" {...register("email")} />
+            <input
+              type="email"
+              className="flex-1 bg-transparent text-lg placeholder-zinc-400 outline-none"
+              placeholder="E-mail"
+              {...register("email")}
+            />
           </div>
 
           <div className="flex h-14 items-center gap-2.5 rounded-lg border border-zinc-800 bg-zinc-950 px-4 py-2.5">
             <Lock className="size-5 text-zinc-400" />
 
-            <input className="flex-1 bg-transparent text-lg placeholder-zinc-400 outline-none" placeholder="Senha" {...register("password")} />
+            <input
+              type="password"
+              className="flex-1 bg-transparent text-lg placeholder-zinc-400 outline-none"
+              placeholder="Senha"
+              {...register("password")}
+            />
           </div>
 
           <div>

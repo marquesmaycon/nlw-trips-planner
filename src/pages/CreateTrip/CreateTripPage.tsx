@@ -3,23 +3,30 @@ import { useState } from "react"
 import { FormProvider, useForm } from "react-hook-form"
 
 import { tripDefaultValues, TripSchema, tripSchema } from "../../validation/schemas"
-import ConfirmTripModal from "./ConfirmTripModal"
 import InviteGuestsModal from "./InviteGuestsModal"
 import DestinationAndDateStep from "./steps/DestinationAndDateStep"
 import InviteGuestsStep from "./steps/InviteGuestsStep"
-import { useLogout } from "../../hooks/api/auth"
+import { Link, useNavigate } from "react-router-dom"
+import Button from "../../components/Button"
+import { useCreateTrip } from "../../hooks/api/trip"
 
 function CreateTripPage() {
+  const navigate = useNavigate()
+
   const [isGuestInputOpen, setIsGuestInputOpen] = useState(false)
   const [isGuestModalOpen, setIsGuestModalOpen] = useState(false)
-  const [isConfirmModalOpen, setIsConfirmModalOpen] = useState(false)
-
-  const { mutateAsync: logout } = useLogout()
 
   const hookForm = useForm<TripSchema>({
     defaultValues: tripDefaultValues,
     resolver: zodResolver(tripSchema),
   })
+
+  const { mutateAsync: createTrip } = useCreateTrip()
+
+  const onSubmit = async (data: TripSchema) => {
+    const trip = await createTrip(data)
+    navigate(`/trips/${trip.id}`)
+  }
 
   const errors = hookForm.formState.errors
 
@@ -32,10 +39,10 @@ function CreateTripPage() {
             <p className="text-lg text-zinc-300">Convide seus amigos e planeje sua próxima viagem!</p>
           </div>
 
-          <div className="space-y-4">
+          <form onSubmit={hookForm.handleSubmit(onSubmit)} className="space-y-4">
             <DestinationAndDateStep isGuestInputOpen={isGuestInputOpen} setIsGuestInputOpen={setIsGuestInputOpen} />
 
-            {isGuestInputOpen && <InviteGuestsStep setIsConfirmModalOpen={setIsConfirmModalOpen} setIsGuestModalOpen={setIsGuestModalOpen} />}
+            {isGuestInputOpen && <InviteGuestsStep setIsGuestModalOpen={setIsGuestModalOpen} />}
 
             <div>
               {Object.entries(errors).map(([field, error]) => (
@@ -44,7 +51,7 @@ function CreateTripPage() {
                 </p>
               ))}
             </div>
-          </div>
+          </form>
 
           <div className="text-sm text-zinc-500">
             Ao planejar sua viagem pela plann.er você automaticamente concorda
@@ -59,14 +66,16 @@ function CreateTripPage() {
             .
           </div>
 
-          <span className="cursor-pointer" onClick={() => logout()}>
-            Logout
-          </span>
+          <div className="mt-5 flex justify-center">
+            <Link to="/">
+              <Button variant="secondary" type="button">
+                Minhas viagens
+              </Button>
+            </Link>
+          </div>
         </div>
 
         {isGuestModalOpen && <InviteGuestsModal setIsGuestModalOpen={setIsGuestModalOpen} />}
-
-        {isConfirmModalOpen && <ConfirmTripModal setIsConfirmModalOpen={setIsConfirmModalOpen} />}
       </div>
     </FormProvider>
   )

@@ -1,15 +1,15 @@
 import { QueryClientProvider } from "@tanstack/react-query"
 import { BrowserRouter, createBrowserRouter, Route, RouterProvider, Routes } from "react-router-dom"
 
-import { queryClient } from "./lib/tanStackQuery"
-import CreateTripPage from "./pages/CreateTrip/CreateTripPage"
-import TripDetailsPage from "./pages/TripDetails/TripDetailsPage"
-import RegisterPage from "./pages/Register/RegisterPage"
-import LoginPage from "./pages/Login/LoginPage"
-import ProtectedRoutes from "./components/ProtectedRoutes"
-import GuestsRoutes from "./components/GuestsRoutes"
 import { ReactQueryDevtools } from "@tanstack/react-query-devtools"
-import { AuthContextProvider } from "./contexts/AuthContext"
+import GuestsRoutes from "./components/GuestsRoutes"
+import ProtectedRoutes from "./components/ProtectedRoutes"
+import { queryClient } from "./libs/tanStackQuery"
+import CreateTripPage from "./pages/CreateTrip/CreateTripPage"
+import LoginPage from "./pages/Login/LoginPage"
+import RegisterPage from "./pages/Register/RegisterPage"
+import TripDetailsPage from "./pages/TripDetails/TripDetailsPage"
+import MyTripsPage from "./pages/MyTrips/MyTripsPage"
 
 const router = createBrowserRouter([
   {
@@ -30,6 +30,10 @@ const router = createBrowserRouter([
     children: [
       {
         path: "/",
+        element: <MyTripsPage />,
+      },
+      {
+        path: "/trips/new",
         element: <CreateTripPage />,
       },
       {
@@ -43,21 +47,20 @@ const router = createBrowserRouter([
 function App() {
   return (
     <QueryClientProvider client={queryClient}>
-      {/* <AuthContextProvider> */}
-        <RouterProvider router={router} />
-        {/* <BrowserRouter>
-          <Routes>
-            <Route element={<GuestsRoutes />}>
-              <Route path="/auth/login" element={<LoginPage />} />
-              <Route path="/auth/register" element={<RegisterPage />} />
-            </Route>
-            <Route element={<ProtectedRoutes />}>
-              <Route path="/" element={<CreateTripPage />} />
-              <Route path="/trips/:tripId" element={<TripDetailsPage />} />
-            </Route>
-          </Routes>
-        </BrowserRouter> */}
-      {/* </AuthContextProvider> */}
+      <RouterProvider router={router} />
+      {/* <BrowserRouter>
+        <Routes>
+          <Route element={<GuestsRoutes />}>
+            <Route path="/auth/login" element={<LoginPage />} />
+            <Route path="/auth/register" element={<RegisterPage />} />
+          </Route>
+          <Route element={<ProtectedRoutes />}>
+            <Route path="/" element={<MyTripsPage />} />
+            <Route path="/create-trip" element={<CreateTripPage />} />
+            <Route path="/trips/:tripId" element={<TripDetailsPage />} />
+          </Route>
+        </Routes>
+      </BrowserRouter> */}
       <ReactQueryDevtools />
     </QueryClientProvider>
   )
