@@ -3,5 +3,6 @@
   "bracketSameLine": true,
   "semi": false,
   "useEditorConfig": false,
-  "printWidth": 150
+  "printWidth": 150,
+  "singleQuote": false
 }

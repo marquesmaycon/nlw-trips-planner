@@ -7,11 +7,18 @@ import { activitiesController } from "../controllers/ActivitiesController"
 import { participantsController } from "../controllers/ParticipantsController"
 import { ActivitySchema, RegisterAccountSchema, EditActivitySchema, EditLinkSchema, EditParticipantSchema, EditTripSchema, LinkSchema, ParticipantSchema, LoginSchema } from "../validation/schemas"
 import { authController } from "../controllers/AuthController"
-import { useNavigate } from "react-router-dom"
+import { api } from "../lib/axios"
+
+function authenticate({ token }: any) {
+  localStorage.setItem('userToken', token)
+  api.defaults.headers['Authorization'] = `Bearer ${token}`
+}
 
 export const useRegister = () => {
   return useMutation({
+    mutationKey: ['register'],
     mutationFn: (data: RegisterAccountSchema) => authController.register(data),
+    onSuccess: authenticate
   })
 }
 
@@ -19,6 +26,27 @@ export const useLogin = () => {
   return useMutation({
     mutationKey: ['login'],
     mutationFn: (data: LoginSchema) => authController.login(data),
+    onSuccess: authenticate
+  })
+}
+
+export const useLogout = () => {
+  return useMutation({
+    mutationKey: ['logout'],
+    mutationFn: () => authController.logout(),
+    onSuccess: () => {
+      api.defaults.headers['Authorization'] = `Bearer ${null}`
+      localStorage.removeItem('userToken')
+      queryClient.invalidateQueries({ queryKey: ['me'] })
+    }
+  })
+}
+
+export const useMe = (token: string | null) => {
+  return useQuery({
+    queryKey: ['me'],
+    queryFn: () => authController.me(),
+    enabled: !!token,
   })
 }
 

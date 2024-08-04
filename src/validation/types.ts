@@ -1,6 +1,12 @@
 import { Dispatch, SetStateAction } from "react"
 import { DateRange } from "react-day-picker"
 
+export type User = {
+  id: string
+  name: string
+  email: string
+}
+
 export type TripData = {
   destination: string
   date: DateRange | undefined

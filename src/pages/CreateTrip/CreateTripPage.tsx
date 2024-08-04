@@ -1,7 +1,8 @@
+import { zodResolver } from "@hookform/resolvers/zod"
 import { useState } from "react"
 import { FormProvider, useForm } from "react-hook-form"
-import { zodResolver } from "@hookform/resolvers/zod"
 
+import { useLogout } from "../../hooks/queryAndMutations"
 import { tripDefaultValues, TripSchema, tripSchema } from "../../validation/schemas"
 import ConfirmTripModal from "./ConfirmTripModal"
 import InviteGuestsModal from "./InviteGuestsModal"
@@ -12,6 +13,8 @@ function CreateTripPage() {
   const [isGuestInputOpen, setIsGuestInputOpen] = useState(false)
   const [isGuestModalOpen, setIsGuestModalOpen] = useState(false)
   const [isConfirmModalOpen, setIsConfirmModalOpen] = useState(false)
+
+  const { mutateAsync: logout } = useLogout()
 
   const hookForm = useForm<TripSchema>({
     defaultValues: tripDefaultValues,
@@ -45,16 +48,20 @@ function CreateTripPage() {
 
           <div className="text-sm text-zinc-500">
             Ao planejar sua viagem pela plann.er você automaticamente concorda
-            <br /> com nossos
-            <a href="#" className="text-zinc-300 underline">
+            <br /> com nossos&nbsp;
+            <a href="#" className="text-zinc-300 underline decoration-lime-300">
               termos de uso
             </a>
-            e
-            <a href="#" className="text-zinc-300 underline">
+            &nbsp;e&nbsp;
+            <a href="#" className="text-zinc-300 underline decoration-lime-300">
               políticas de privacidade
             </a>
             .
           </div>
+
+          <span className="cursor-pointer" onClick={() => logout()}>
+            Logout
+          </span>
         </div>
 
         {isGuestModalOpen && <InviteGuestsModal setIsGuestModalOpen={setIsGuestModalOpen} />}

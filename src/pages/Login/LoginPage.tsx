@@ -8,7 +8,7 @@ import { useLogin } from "../../hooks/queryAndMutations"
 
 const LoginPage = () => {
   const navigate = useNavigate()
-  
+
   const {
     handleSubmit,
     register,
