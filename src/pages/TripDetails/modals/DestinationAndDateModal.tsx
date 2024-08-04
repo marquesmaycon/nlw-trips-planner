@@ -5,7 +5,7 @@ import { useForm } from "react-hook-form"
 import { useParams } from "react-router-dom"
 
 import Button from "../../../components/Button"
-import { queryClient } from "../../../lib/tanStackQuery"
+import { queryClient } from "../../../libs/tanStackQuery"
 import { editTripSchema, EditTripSchema } from "../../../validation/schemas"
 import { DestinationAndDateModalProps, Trip } from "../../../validation/types"
 import { useEditTrip } from "../../../hooks/api/trip"

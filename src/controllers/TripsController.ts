@@ -1,4 +1,4 @@
-import { api } from "../lib/axios"
+import { api } from "../libs/axios"
 import { EditTripSchema, TripSchema } from "../validation/schemas"
 import { Trip } from "../validation/types"
 

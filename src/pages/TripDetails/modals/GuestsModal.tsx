@@ -7,7 +7,7 @@ import { AtSign, CircleUser, Plus, X } from "lucide-react"
 import Button from "../../../components/Button"
 import { participantDefaultValues, ParticipantSchema, participantSchema } from "../../../validation/schemas"
 import { GuestsModalProps, Participant } from "../../../validation/types"
-import { queryClient } from "../../../lib/tanStackQuery"
+import { queryClient } from "../../../libs/tanStackQuery"
 import { useCreateParticipant, useDeleteParticipant, useEditParticipant } from "../../../hooks/api/participant"
 
 const GuestsModal = ({ setIsGuestsModalOpen, participantId }: GuestsModalProps) => {

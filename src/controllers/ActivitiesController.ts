@@ -1,4 +1,4 @@
-import { api } from "../lib/axios"
+import { api } from "../libs/axios"
 import { ActivitiesByDay, Activity } from "../validation/types"
 import TripResourceBaseController from "./TripResourceBaseController"
 

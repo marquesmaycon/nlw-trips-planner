@@ -5,7 +5,7 @@ import { zodResolver } from "@hookform/resolvers/zod"
 import { Link2, Tag, X } from "lucide-react"
 
 import Button from "../../../components/Button"
-import { queryClient } from "../../../lib/tanStackQuery"
+import { queryClient } from "../../../libs/tanStackQuery"
 import { Link, LinkModalProps } from "../../../validation/types"
 import { linkDefaultValues, LinkSchema, linkSchema } from "../../../validation/schemas"
 import { useCreateLink, useEditLink } from "../../../hooks/api/link"

@@ -1,6 +1,6 @@
 import { useQuery, useMutation } from "@tanstack/react-query"
 import { participantsController } from "../../controllers/ParticipantsController"
-import { queryClient } from "../../lib/tanStackQuery"
+import { queryClient } from "../../libs/tanStackQuery"
 import { ParticipantSchema, EditParticipantSchema } from "../../validation/schemas"
 
 export const useGetParticipants = (tripId: string) => {

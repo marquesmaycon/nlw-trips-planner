@@ -6,7 +6,7 @@ import { zodResolver } from "@hookform/resolvers/zod"
 
 
 import Button from "../../../components/Button"
-import { queryClient } from "../../../lib/tanStackQuery"
+import { queryClient } from "../../../libs/tanStackQuery"
 import { activityDefaultValues, ActivitySchema, activitySchema } from "../../../validation/schemas"
 import { ActivitiesByDay, ActivityModalProps, Trip } from "../../../validation/types"
 import { useCreateActivity, useEditActivity } from "../../../hooks/api/activity"

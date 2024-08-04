@@ -1,6 +1,6 @@
 import { useQuery, useMutation } from "@tanstack/react-query"
 import { linksController } from "../../controllers/LinksController"
-import { queryClient } from "../../lib/tanStackQuery"
+import { queryClient } from "../../libs/tanStackQuery"
 import { LinkSchema, EditLinkSchema } from "../../validation/schemas"
 
 export const useGetLinks = (tripId: string) => {

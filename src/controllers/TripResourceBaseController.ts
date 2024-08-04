@@ -1,4 +1,4 @@
-import { api } from "../lib/axios"
+import { api } from "../libs/axios"
 
 export default class TripResourceBaseController<Resource = any> {
   constructor(protected resource: string) { }

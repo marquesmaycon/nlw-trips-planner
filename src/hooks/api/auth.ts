@@ -1,8 +1,8 @@
 import { useMutation, useQuery } from "@tanstack/react-query"
 import { LoginSchema, RegisterAccountSchema } from "../../validation/schemas"
 import { authController } from "../../controllers/AuthController"
-import { api } from "../../lib/axios"
-import { queryClient } from "../../lib/tanStackQuery"
+import { api } from "../../libs/axios"
+import { queryClient } from "../../libs/tanStackQuery"
 
 function authenticate({ token }: any) {
   localStorage.setItem('userToken', token)
@@ -28,11 +28,12 @@ export const useLogin = () => {
 export const useLogout = () => {
   return useMutation({
     mutationKey: ['logout'],
-    mutationFn: () => authController.logout(),
+    mutationFn: authController.logout,
     onSuccess: () => {
       api.defaults.headers['Authorization'] = `Bearer ${null}`
       localStorage.removeItem('userToken')
-      queryClient.invalidateQueries({ queryKey: ['me'] })
+      queryClient.setQueryData(['me'], null)
+      // queryClient.invalidateQueries({ queryKey: ['me'] })
     }
   })
 }
@@ -40,7 +41,7 @@ export const useLogout = () => {
 export const useMe = (token: string | null) => {
   return useQuery({
     queryKey: ['me'],
-    queryFn: () => authController.me(),
+    queryFn: authController.me,
     enabled: !!token,
   })
 }

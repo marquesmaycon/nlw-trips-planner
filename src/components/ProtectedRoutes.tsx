@@ -3,7 +3,7 @@ import { Navigate, Outlet } from "react-router-dom"
 
 const ProtectedRoutes = () => {
   const user = useAuth()
-  return user ? <Outlet /> : <Navigate to="/auth/login" replace />
+  return !user ? <Navigate to="/auth/login" replace /> : <Outlet />
 }
 
 export default ProtectedRoutes

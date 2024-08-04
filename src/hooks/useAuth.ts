@@ -5,5 +5,5 @@ export const useAuth = () => {
   
   const { data: user } = useMe(localToken)
 
-  return !!user ? user : null
+  return user
 }

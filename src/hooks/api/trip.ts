@@ -1,6 +1,6 @@
 import { useQuery, useMutation } from "@tanstack/react-query"
 import { tripController } from "../../controllers/TripsController"
-import { queryClient } from "../../lib/tanStackQuery"
+import { queryClient } from "../../libs/tanStackQuery"
 import { EditTripSchema } from "../../validation/schemas"
 
 export const useGetTrip = (tripId: string) => {

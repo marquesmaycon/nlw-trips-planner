@@ -1,4 +1,4 @@
-import { api } from "../lib/axios"
+import { api } from "../libs/axios"
 import { RegisterAccountSchema, LoginSchema } from "../validation/schemas"
 import { User } from "../validation/types"
 
