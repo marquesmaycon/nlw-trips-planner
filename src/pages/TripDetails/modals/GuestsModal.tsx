@@ -5,10 +5,10 @@ import { zodResolver } from "@hookform/resolvers/zod"
 import { AtSign, CircleUser, Plus, X } from "lucide-react"
 
 import Button from "../../../components/Button"
-import { useCreateParticipant, useDeleteParticipant, useEditParticipant } from "../../../hooks/queryAndMutations"
 import { participantDefaultValues, ParticipantSchema, participantSchema } from "../../../validation/schemas"
 import { GuestsModalProps, Participant } from "../../../validation/types"
 import { queryClient } from "../../../lib/tanStackQuery"
+import { useCreateParticipant, useDeleteParticipant, useEditParticipant } from "../../../hooks/api/participant"
 
 const GuestsModal = ({ setIsGuestsModalOpen, participantId }: GuestsModalProps) => {
   const { tripId } = useParams()

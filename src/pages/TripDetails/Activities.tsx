@@ -6,8 +6,8 @@ import { CircleCheck, CircleDashed, Pencil, Plus, Trash } from "lucide-react"
 
 import Button from "../../components/Button"
 import { isBeforeRightNow } from "../../utils/functions"
-import { useDeleteAcitivity, useEditActivity, useGetActivities } from "../../hooks/queryAndMutations"
 import ActivityModal from "./modals/ActivityModal"
+import { useDeleteAcitivity, useEditActivity, useGetActivities } from "../../hooks/api/activity"
 
 const Activities = () => {
   const { tripId } = useParams()

@@ -4,7 +4,7 @@ import { CheckCircle2, CircleDashed, UserCog } from "lucide-react"
 
 import Button from "../../components/Button"
 import GuestsModal from "./modals/GuestsModal"
-import { useEditParticipant, useGetParticipants } from "../../hooks/queryAndMutations"
+import { useEditParticipant, useGetParticipants } from "../../hooks/api/participant"
 
 const Guests = () => {
   const { tripId } = useParams()

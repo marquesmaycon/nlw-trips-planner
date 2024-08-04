@@ -3,8 +3,8 @@ import { Lock, Mail, User } from "lucide-react"
 import { useForm } from "react-hook-form"
 import { registerAccountDefaultValues, RegisterAccountSchema, registerAccountSchema } from "../../validation/schemas"
 import Button from "../../components/Button"
-import { useRegister } from "../../hooks/queryAndMutations"
 import { Link, useNavigate } from "react-router-dom"
+import { useRegister } from "../../hooks/api/auth"
 
 const RegisterPage = () => {
   const navigate = useNavigate()

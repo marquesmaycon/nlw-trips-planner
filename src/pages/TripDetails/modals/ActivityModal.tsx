@@ -7,9 +7,9 @@ import { zodResolver } from "@hookform/resolvers/zod"
 
 import Button from "../../../components/Button"
 import { queryClient } from "../../../lib/tanStackQuery"
-import { useCreateActivity, useEditActivity } from "../../../hooks/queryAndMutations"
 import { activityDefaultValues, ActivitySchema, activitySchema } from "../../../validation/schemas"
 import { ActivitiesByDay, ActivityModalProps, Trip } from "../../../validation/types"
+import { useCreateActivity, useEditActivity } from "../../../hooks/api/activity"
 
 const ActivityModal = ({ setIsActivityModalOpen, activityId }: ActivityModalProps) => {
   const { tripId } = useParams()

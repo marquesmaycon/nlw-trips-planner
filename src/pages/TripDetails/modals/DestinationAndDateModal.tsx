@@ -5,10 +5,10 @@ import { useForm } from "react-hook-form"
 import { useParams } from "react-router-dom"
 
 import Button from "../../../components/Button"
-import { useEditTrip } from "../../../hooks/queryAndMutations"
 import { queryClient } from "../../../lib/tanStackQuery"
 import { editTripSchema, EditTripSchema } from "../../../validation/schemas"
 import { DestinationAndDateModalProps, Trip } from "../../../validation/types"
+import { useEditTrip } from "../../../hooks/api/trip"
 
 const DestinationAndDateModal = ({ setIsDestinationDateModalOpen }: DestinationAndDateModalProps) => {
   const { tripId } = useParams()

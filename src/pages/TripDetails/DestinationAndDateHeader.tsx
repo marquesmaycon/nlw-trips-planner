@@ -3,9 +3,9 @@ import { useParams } from "react-router-dom"
 import { Calendar, MapPin, Settings2 } from "lucide-react"
 
 import Button from "../../components/Button"
-import { useGetTrip } from "../../hooks/queryAndMutations"
 import { formatTripDate } from "../../utils/functions"
 import DestinationAndDateModal from "./modals/DestinationAndDateModal"
+import { useGetTrip } from "../../hooks/api/trip"
 
 const DestinationAndDateHeader = () => {
   const { tripId } = useParams()

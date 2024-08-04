@@ -1,4 +1,4 @@
-import { useMe } from "./queryAndMutations"
+import { useMe } from "./api/auth"
 
 export const useAuth = () => {
   const localToken = localStorage.getItem('userToken')

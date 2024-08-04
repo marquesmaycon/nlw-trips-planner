@@ -4,7 +4,7 @@ import { Link2, Plus, Trash } from "lucide-react"
 
 import Button from "../../components/Button"
 import LinkModal from "./modals/LinkModal"
-import { useDeleteLink, useGetLinks } from "../../hooks/queryAndMutations"
+import { useDeleteLink, useGetLinks } from "../../hooks/api/link"
 
 const ImportantLinks = () => {
   const { tripId } = useParams()

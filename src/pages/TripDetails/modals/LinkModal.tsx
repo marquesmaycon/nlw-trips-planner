@@ -8,7 +8,7 @@ import Button from "../../../components/Button"
 import { queryClient } from "../../../lib/tanStackQuery"
 import { Link, LinkModalProps } from "../../../validation/types"
 import { linkDefaultValues, LinkSchema, linkSchema } from "../../../validation/schemas"
-import { useCreateLink, useEditLink } from "../../../hooks/queryAndMutations"
+import { useCreateLink, useEditLink } from "../../../hooks/api/link"
 
 const LinkModal = ({ setIsLinkModalOpen, linkId }: LinkModalProps) => {
   const { tripId } = useParams()

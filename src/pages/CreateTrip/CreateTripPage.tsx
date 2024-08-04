@@ -2,12 +2,12 @@ import { zodResolver } from "@hookform/resolvers/zod"
 import { useState } from "react"
 import { FormProvider, useForm } from "react-hook-form"
 
-import { useLogout } from "../../hooks/queryAndMutations"
 import { tripDefaultValues, TripSchema, tripSchema } from "../../validation/schemas"
 import ConfirmTripModal from "./ConfirmTripModal"
 import InviteGuestsModal from "./InviteGuestsModal"
 import DestinationAndDateStep from "./steps/DestinationAndDateStep"
 import InviteGuestsStep from "./steps/InviteGuestsStep"
+import { useLogout } from "../../hooks/api/auth"
 
 function CreateTripPage() {
   const [isGuestInputOpen, setIsGuestInputOpen] = useState(false)

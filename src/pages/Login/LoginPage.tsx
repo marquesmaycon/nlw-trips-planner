@@ -4,7 +4,7 @@ import { loginDefaultValues, LoginSchema, loginSchema } from "../../validation/s
 import { zodResolver } from "@hookform/resolvers/zod"
 import { Lock, Mail } from "lucide-react"
 import { Link, useNavigate } from "react-router-dom"
-import { useLogin } from "../../hooks/queryAndMutations"
+import { useLogin } from "../../hooks/api/auth"
 
 const LoginPage = () => {
   const navigate = useNavigate()
