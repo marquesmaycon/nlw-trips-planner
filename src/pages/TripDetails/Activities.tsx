@@ -45,7 +45,7 @@ const Activities = () => {
             <div key={activity.date} className={`space-y-2.5`}>
               <div className="flex items-baseline gap-2">
                 <span className="text-xl font-semibold text-zinc-300">
-                  Dia {format(parseISO(activity.date), "d")} {/* TO DO => ADD MÊS */}
+                  Dia {format(parseISO(activity.date), "d' de 'MMMM", { locale: ptBR })}
                 </span>
                 <span className="text-xs text-zinc-500">{format(activity.date, "EEE", { locale: ptBR })}</span>
               </div>
@@ -57,7 +57,7 @@ const Activities = () => {
                     return (
                       <div
                         key={id}
-                        className={`group flex items-center gap-3 rounded-xl bg-zinc-900 px-4 py-2.5 shadow-shape ${isDoneOrLate ? "opacity-60" : ""} ${variables == id ? "animate-pulse" : ""}`}>
+                        className={`group flex items-center gap-3 rounded-xl bg-zinc-900 px-4 py-2.5 shadow-shape ${isDoneOrLate ? "bg-opacity-60" : ""} ${variables == id ? "animate-pulse" : ""}`}>
                         {isDone ? (
                           <CircleCheck className="size-5 cursor-pointer text-lime-300" onClick={toggleDone} />
                         ) : (

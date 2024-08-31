@@ -22,6 +22,10 @@ class TripController<T extends Trip> {
     const response = await api.put(`/trips/${id}`, data)
     return response.data
   }
+
+  async deleteTrip(id: number): Promise<void> {
+    await api.delete(`/trips/${id}`)
+  }
 }
 
 export const tripController = new TripController()

@@ -13,7 +13,12 @@ import { useCreateParticipant, useDeleteParticipant, useEditParticipant } from "
 const GuestsModal = ({ setIsGuestsModalOpen, participantId }: GuestsModalProps) => {
   const { tripId } = useParams()
 
-  const { handleSubmit, register, reset } = useForm<ParticipantSchema>({
+  const {
+    handleSubmit,
+    register,
+    reset,
+    formState: { errors },
+  } = useForm<ParticipantSchema>({
     defaultValues: participantDefaultValues,
     resolver: zodResolver(participantSchema),
   })
@@ -31,10 +36,10 @@ const GuestsModal = ({ setIsGuestsModalOpen, participantId }: GuestsModalProps) 
     if (participantId) {
       await editParticipant({ ...data, id: participantId })
       setIsGuestsModalOpen(false)
-      reset(participantDefaultValues)
     } else {
       await createParticipant(data)
     }
+    reset(participantDefaultValues)
   }
 
   const guests = queryClient.getQueryData<Participant[]>(["participants", tripId])
@@ -91,14 +96,21 @@ const GuestsModal = ({ setIsGuestsModalOpen, participantId }: GuestsModalProps) 
             />
           </div>
 
+          <div>
+            {Object.entries(errors).map(([field, error]) => (
+              <p key={field} className="text-xs text-red-400">
+                {error?.message}
+              </p>
+            ))}
+          </div>
+
           <Button type="submit" size="full" isLoading={isCreating || isEditing}>
             {participantId ? (
               "Editar convidado"
             ) : (
-              <div>
-                "Adicionar convidado"
-                <Plus className="size-5" />
-              </div>
+              <>
+                Adicionar convidado <Plus className="size-5" />
+              </>
             )}
           </Button>
         </form>

@@ -2,8 +2,6 @@ import DestinationAndDateHeader from "./DestinationAndDateHeader"
 import ImportantLinks from "./ImportantLinks"
 import Activities from "./Activities"
 import Guests from "./Guests"
-import { Link } from "react-router-dom"
-import Button from "../../components/Button"
 
 const TripDetailsPage = () => {
   return (
@@ -14,17 +12,11 @@ const TripDetailsPage = () => {
         <Activities />
 
         <div className="w-80 space-y-6">
+          
           <ImportantLinks />
           <div className="h-px w-full bg-zinc-800" />
           <Guests />
           <div className="h-px w-full bg-zinc-800" />
-          <div>
-            <Link to="/">
-              <Button type="button" variant="secondary" size="full">
-                Minhas viagens
-              </Button>
-            </Link>
-          </div>
         </div>
       </main>
     </div>

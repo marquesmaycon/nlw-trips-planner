@@ -18,7 +18,7 @@ const LoginPage = () => {
     resolver: zodResolver(loginSchema),
   })
 
-  const { mutateAsync, isPending } = useLogin()
+  const { mutateAsync, isPending, error } = useLogin()
 
   async function onSubmit(data: LoginSchema) {
     await mutateAsync(data)
@@ -60,6 +60,7 @@ const LoginPage = () => {
                 {error?.message}
               </p>
             ))}
+            {error && <p className="text-xs text-red-400">Por favor, verifique suas credenciais</p>}
           </div>
 
           <Button type="submit" size="full" isLoading={isPending}>

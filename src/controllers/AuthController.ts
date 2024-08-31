@@ -8,7 +8,7 @@ class AuthController {
     return response.data
   }
 
-  async login(data: LoginSchema): Promise<any> {
+  async login(data: LoginSchema) {
     const response = await api.post("/auth/login", data)
     return response.data
   }

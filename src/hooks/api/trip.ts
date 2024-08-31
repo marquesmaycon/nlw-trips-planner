@@ -36,3 +36,12 @@ export const useEditTrip = (tripId: string) => {
     }
   })
 }
+
+export const useDeleteTrip = () => {
+  return useMutation({
+    mutationFn: (tripId: number) => tripController.deleteTrip(tripId),
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ["trips"] })
+    }
+  })
+}

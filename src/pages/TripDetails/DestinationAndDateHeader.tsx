@@ -1,5 +1,5 @@
 import { useState } from "react"
-import { useParams } from "react-router-dom"
+import { Link, useParams } from "react-router-dom"
 import { Calendar, MapPin, Settings2 } from "lucide-react"
 
 import Button from "../../components/Button"
@@ -32,6 +32,12 @@ const DestinationAndDateHeader = () => {
         <Button variant="secondary" onClick={() => setSetIsDestinationDateModalOpen(true)}>
           Alterar local e data <Settings2 className="size-5" />
         </Button>
+
+        <Link to="/">
+          <Button type="button" variant="secondary" size="full">
+            Voltar
+          </Button>
+        </Link>
       </div>
 
       {setIsDestinationDateModalOpen && <DestinationAndDateModal setIsDestinationDateModalOpen={setSetIsDestinationDateModalOpen} />}

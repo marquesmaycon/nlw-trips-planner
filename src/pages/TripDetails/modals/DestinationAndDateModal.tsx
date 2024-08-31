@@ -61,7 +61,7 @@ const DestinationAndDateModal = ({ setIsDestinationDateModalOpen }: DestinationA
           <input className="flex-1 bg-transparent text-lg placeholder-zinc-400 outline-none" placeholder="Local" {...register("destination")} />
         </div>
 
-        <DayPicker mode="range" selected={date} onSelect={onSelectDate} />
+        <DayPicker mode="range" defaultMonth={new Date(currTrip!.startsAt)} selected={date} onSelect={onSelectDate} />
 
         <Button variant="secondary" size="full" type="submit" isLoading={isPending}>
           Confirmar <ArrowRight className="size-5" />
