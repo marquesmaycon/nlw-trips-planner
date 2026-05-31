@@ -1,32 +1,84 @@
-# React + TypeScript + Vite
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+# NLW Trips Planner
 
-Currently, two official plugins are available:
+Frontend de planejamento de viagens desenvolvido durante a NLW, com formularios, roteamento e consumo de API.
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react/README.md) uses [Babel](https://babeljs.io/) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+![React 18](https://img.shields.io/badge/React_18-20232A?style=flat-square)
+![TypeScript](https://img.shields.io/badge/TypeScript-20232A?style=flat-square)
+![Vite](https://img.shields.io/badge/Vite-20232A?style=flat-square)
+![React Router](https://img.shields.io/badge/React_Router-20232A?style=flat-square)
+![TanStack Query](https://img.shields.io/badge/TanStack_Query-20232A?style=flat-square)
+![Axios](https://img.shields.io/badge/Axios-20232A?style=flat-square)
+![React Hook Form](https://img.shields.io/badge/React_Hook_Form-20232A?style=flat-square)
+![Zod](https://img.shields.io/badge/Zod-20232A?style=flat-square)
+![Tailwind CSS](https://img.shields.io/badge/Tailwind_CSS-20232A?style=flat-square)
 
-## Expanding the ESLint configuration
+## Demo
 
-If you are developing a production application, we recommend updating the configuration to enable type aware lint rules:
+Este projeto nao possui demo publica ativa no momento.
 
-- Configure the top-level `parserOptions` property like this:
+## Sobre
 
-```js
-export default {
-  // other rules...
-  parserOptions: {
-    ecmaVersion: 'latest',
-    sourceType: 'module',
-    project: ['./tsconfig.json', './tsconfig.node.json'],
-    tsconfigRootDir: __dirname,
-  },
-}
+Frontend de planejamento de viagens desenvolvido durante a NLW, com formularios, roteamento e consumo de API.
+
+O objetivo deste repositorio e demonstrar uma implementacao clara, organizada e facil de avaliar, com documentacao objetiva para recrutadores e pessoas tecnicas entenderem rapidamente o contexto do projeto.
+
+## Funcionalidades
+
+- Criacao de viagem.
+- Convites.
+- Atividades.
+- Links uteis.
+- Calendario/date picker.
+- Consumo de API.
+
+## Stack
+
+- **React 18**
+- **TypeScript**
+- **Vite**
+- **React Router**
+- **TanStack Query**
+- **Axios**
+- **React Hook Form**
+- **Zod**
+- **Tailwind CSS**
+
+## Como executar
+
+```bash
+git clone https://github.com/marquesmaycon/nlw-trips-planner.git
+cd nlw-trips-planner
+npm install
+npm run dev
 ```
 
-### api: https://github.com/rocketseat-education/nlw-journey-nodejs
+## Scripts disponiveis
 
+- `npm run dev`
+- `npm run build`
+- `npm run lint`
+- `npm run preview`
 
-- Replace `plugin:@typescript-eslint/recommended` to `plugin:@typescript-eslint/recommended-type-checked` or `plugin:@typescript-eslint/strict-type-checked`
-- Optionally add `plugin:@typescript-eslint/stylistic-type-checked`
-- Install [eslint-plugin-react](https://github.com/jsx-eslint/eslint-plugin-react) and add `plugin:react/recommended` & `plugin:react/jsx-runtime` to the `extends` list
+## Destaques tecnicos
+
+- Projeto com fluxo de produto completo.
+- Boa vitrine para formularios e React Query.
+- Tema simples de entender para recrutadores.
+
+## Repositorio
+
+[Acessar repositorio no GitHub](https://github.com/marquesmaycon/nlw-trips-planner)
+
+---
+
+<div align="center">
+  <img src="https://github.com/marquesmaycon.png" width="100px" style="border-radius: 50%"/>
+  <br/>
+  <strong>Maycon Marques</strong>
+  <br/>
+  <br/>
+
+  [![LinkedIn](https://img.shields.io/badge/LinkedIn-0077B5?style=flat-square&logo=linkedin&logoColor=white)](https://www.linkedin.com/in/mayconhenrique/)
+  [![GitHub](https://img.shields.io/badge/GitHub-100000?style=flat-square&logo=github&logoColor=white)](https://github.com/marquesmaycon)
+  [![Email](https://img.shields.io/badge/Email-D14836?style=flat-square&logo=gmail&logoColor=white)](mailto:mayconmarquesh@gmail.com)
+</div>
